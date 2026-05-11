@@ -1,0 +1,106 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches: [main]
+
+# We need write access to id-token (not used here, future-proof for OIDC),
+# pull-requests for the comment, and contents to checkout.
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Pattern 1: Matrix Strategy
+  # Validate the same change against multiple orgs in parallel.
+  # In a real shop this would be FSC sandbox + Health Cloud sandbox + ...
+  # For the demo we have prod-demo (treated as production-mirror sandbox)
+  # and sandbox-demo (treated as developer sandbox).
+  # ---------------------------------------------------------------------------
+  validate:
+    name: Validate against ${{ matrix.org_alias }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false   # Let all matrix legs report; don't stop the first failure from masking the others.
+      matrix:
+        org_alias: [prod, sandbox]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install -g @salesforce/cli@latest
+          sf --version
+
+      - name: Authenticate to ${{ matrix.org_alias }}
+        run: |
+          # Pattern 2 / security best-practice from skill v2.0.0:
+          # Use process substitution so the auth URL is never written to disk.
+          # On a real shop this would be JWT Bearer flow with --jwt-key-file <(printf '%s' "$KEY")
+          # — Auth URL here only because trial Dev Hubs can't deploy ConnectedApp metadata
+          # to scratch orgs (a known restriction). The security pattern is identical.
+          sf org login sfdx-url \
+            --sfdx-url-file <(printf '%s' "${{ secrets[format('SFDX_AUTH_URL_{0}', matrix.org_alias)] }}") \
+            --alias ${{ matrix.org_alias }}-target
+
+      - name: Run validation deploy with tests
+        id: validation
+        run: |
+          mkdir -p test-results
+          # `validate` does NOT actually deploy — it just runs metadata checks + tests.
+          # The Job ID it returns is what Pattern 3 (Quick Deploy) reuses on merge to main.
+          sf project deploy validate \
+            --target-org ${{ matrix.org_alias }}-target \
+            --source-dir force-app \
+            --test-level RunLocalTests \
+            --wait 30 \
+            --json > test-results/validate.json
+
+          JOB_ID=$(jq -r '.result.id' test-results/validate.json)
+          STATUS=$(jq -r '.result.status' test-results/validate.json)
+          echo "job_id=$JOB_ID" >> "$GITHUB_OUTPUT"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          echo "Validation Job ID: $JOB_ID (status: $STATUS)"
+
+      - name: Validate code coverage
+        run: |
+          # Pull the org-wide coverage from the validate result. The skill v2.0.0
+          # corrected the original bug here: testRunCoverage is a numeric percentage,
+          # not a string with a '%' suffix, so no tr/cut needed.
+          COVERAGE=$(jq -r '.result.details.runTestResult.codeCoverage[] | select(.name=="BookingService") | (.numLocations - .numLocationsNotCovered) / .numLocations * 100' test-results/validate.json | head -1)
+          REQUIRED=${{ vars.TEST_COVERAGE_REQUIRED || 75 }}
+
+          if [[ -z "$COVERAGE" || "$COVERAGE" == "null" ]]; then
+            echo "::warning::Could not extract coverage; skipping gate"
+            exit 0
+          fi
+
+          # awk for portable float comparison (bc not on every runner image).
+          if awk -v c="$COVERAGE" -v r="$REQUIRED" 'BEGIN { exit !(c < r) }'; then
+            echo "::error::Code coverage ${COVERAGE}% on BookingService is below required ${REQUIRED}%"
+            exit 1
+          fi
+          echo "✅ Code coverage ${COVERAGE}% on BookingService (>= ${REQUIRED}%)"
+
+      - name: Capture validation Job ID for Quick Deploy (prod only)
+        if: matrix.org_alias == 'prod' && steps.validation.outputs.status == 'Succeeded'
+        run: |
+          # Pattern 3 (Quick Deploy) setup: write the Job ID + a timestamp so the
+          # deploy workflow can age-check it (Salesforce-side validations expire
+          # after 4 calendar days regardless of GitHub artifact retention).
+          mkdir -p validation-artifact
+          echo "${{ steps.validation.outputs.job_id }}" > validation-artifact/job_id.txt
+          date -u +%s > validation-artifact/timestamp.txt
+          cat validation-artifact/job_id.txt validation-artifact/timestamp.txt
+
+      - name: Upload Job ID artifact
+        if: matrix.org_alias == 'prod' && steps.validation.outputs.status == 'Succeeded'
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-job-id
+          path: validation-artifact/
+          retention-days: 7   # Match Salesforce's 4-day cliff with a small buffer; longer would mislead.

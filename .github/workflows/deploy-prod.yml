@@ -1,0 +1,136 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}   # Allow manual trigger for the demo
+
+permissions:
+  contents: read
+  actions: read           # Needed to download artifacts from a different workflow
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Pattern 5: Custom Properties as governance gate.
+  # This job runs FIRST and BEFORE secrets are accessible (no environment binding).
+  # If the repo isn't tagged compliance-tier=SOX, the deploy job never runs.
+  # ---------------------------------------------------------------------------
+  governance-gate:
+    name: Governance gate
+    runs-on: ubuntu-latest
+    outputs:
+      compliance_tier: ${{ steps.props.outputs.compliance_tier }}
+      deployment_tier: ${{ steps.props.outputs.deployment_tier }}
+    steps:
+      - name: Read repository custom properties
+        id: props
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Custom Properties are NOT auto-exposed as ${{ vars.X }} — that only
+          # works for repo/org Variables. Properties must be read via REST.
+          PROPS=$(gh api "/repos/${{ github.repository }}/properties/values")
+          COMPLIANCE=$(echo "$PROPS" | jq -r '.[] | select(.property_name=="compliance-tier") | .value')
+          DEPLOY_TIER=$(echo "$PROPS" | jq -r '.[] | select(.property_name=="deployment-tier") | .value')
+
+          echo "compliance_tier=${COMPLIANCE:-Standard}" >> "$GITHUB_OUTPUT"
+          echo "deployment_tier=${DEPLOY_TIER:-dev}" >> "$GITHUB_OUTPUT"
+          echo "Repo properties → compliance: ${COMPLIANCE}, deployment: ${DEPLOY_TIER}"
+
+      - name: Enforce compliance gate
+        run: |
+          if [[ "${{ steps.props.outputs.compliance_tier }}" != "SOX" ]]; then
+            echo "::error::Repository not tagged as SOX-compliant. Production deploys require compliance-tier=SOX."
+            echo "Set it: Repo Settings → Custom Properties → compliance-tier"
+            exit 1
+          fi
+          if [[ "${{ steps.props.outputs.deployment_tier }}" != "production" ]]; then
+            echo "::error::Repository not tagged for production deploys."
+            exit 1
+          fi
+          echo "✅ Compliance gate passed: SOX + production"
+
+  # ---------------------------------------------------------------------------
+  # Pattern 3: Quick Deploy with 4-day expiration fallback.
+  # Reuses the validation Job ID from validate-pr.yml. If the validation is
+  # older than 72h (Salesforce expires at 96h, we leave a buffer), or if the
+  # artifact is missing, fall back to a full deploy with RunLocalTests.
+  # ---------------------------------------------------------------------------
+  deploy:
+    name: Deploy to production org
+    needs: governance-gate
+    runs-on: ubuntu-latest
+    environment: production   # Brings GitHub Environment protection rules into play.
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli@latest
+
+      - name: Authenticate to production
+        run: |
+          sf org login sfdx-url \
+            --sfdx-url-file <(printf '%s' "${{ secrets.SFDX_AUTH_URL_PROD }}") \
+            --alias production
+
+      - name: Download validation Job ID artifact
+        id: download
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true   # Treat "no artifact found" as "do a full deploy".
+        with:
+          workflow: validate-pr.yml
+          name: validation-job-id
+          path: validation-artifact
+          # Look at the latest successful run on the merged PR's commit.
+          commit: ${{ github.event.before }}
+          if_no_artifact_found: warn
+
+      - name: Decide quick vs full deploy
+        id: decide
+        run: |
+          # If the artifact is missing, full deploy.
+          if [[ ! -s validation-artifact/job_id.txt ]]; then
+            echo "No validation artifact — doing full deploy"
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # If the validation is older than 72h, full deploy (Salesforce expires at 96h).
+          AGE_SEC=$(( $(date -u +%s) - $(cat validation-artifact/timestamp.txt) ))
+          AGE_HOURS=$(( AGE_SEC / 3600 ))
+          echo "Validation is ${AGE_HOURS}h old"
+          if (( AGE_HOURS > 72 )); then
+            echo "::warning::Validation older than 72h, falling back to full deploy"
+            echo "mode=full" >> "$GITHUB_OUTPUT"
+          else
+            echo "Within Quick Deploy window"
+            echo "mode=quick" >> "$GITHUB_OUTPUT"
+            echo "job_id=$(cat validation-artifact/job_id.txt)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Quick Deploy
+        if: steps.decide.outputs.mode == 'quick'
+        run: |
+          echo "🚀 Quick Deploy using validation Job ID: ${{ steps.decide.outputs.job_id }}"
+          sf project deploy quick \
+            --job-id "${{ steps.decide.outputs.job_id }}" \
+            --target-org production \
+            --wait 10
+
+      - name: Full Deploy (fallback)
+        if: steps.decide.outputs.mode == 'full'
+        run: |
+          echo "📦 Full deploy with RunLocalTests"
+          sf project deploy start \
+            --target-org production \
+            --source-dir force-app \
+            --test-level RunLocalTests \
+            --wait 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### Deploy summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Mode**: ${{ steps.decide.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Compliance tier**: ${{ needs.governance-gate.outputs.compliance_tier }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Deployment tier**: ${{ needs.governance-gate.outputs.deployment_tier }}" >> "$GITHUB_STEP_SUMMARY"
