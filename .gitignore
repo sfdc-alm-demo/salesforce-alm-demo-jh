@@ -1,0 +1,30 @@
+# Salesforce CLI / SFDX
+.sfdx/
+.sf/
+.localdevserver/
+
+# Test artifacts
+test-results/
+coverage/
+*.coverage.json
+
+# Auth artifacts (NEVER commit these)
+*.key
+*.crt
+*.csr
+auth_url.txt
+jwt-key.txt
+server.key
+server.crt
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node (used by some SF tooling/scripts)
+node_modules/
+npm-debug.log
