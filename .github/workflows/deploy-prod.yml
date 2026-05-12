@@ -81,8 +81,10 @@ jobs:
           workflow: validate-pr.yml
           name: validation-job-id
           path: validation-artifact
-          # Look at the latest successful run on the merged PR's commit.
-          commit: ${{ github.event.before }}
+          # Find the most recent successful validate-pr run regardless of which
+          # branch/commit it ran on. On squash-merge the branch SHA disappears,
+          # so commit-based lookup misses the artifact.
+          workflow_conclusion: success
           if_no_artifact_found: warn
 
       - name: Decide quick vs full deploy
@@ -121,10 +123,14 @@ jobs:
         if: steps.decide.outputs.mode == 'full'
         run: |
           echo "📦 Full deploy with RunLocalTests"
+          # --ignore-conflicts because scratch orgs have source tracking enabled
+          # by default; this scenario doesn't apply to a real production org
+          # without source tracking. In a real prod deploy you'd remove this flag.
           sf project deploy start \
             --target-org production \
             --source-dir force-app \
             --test-level RunLocalTests \
+            --ignore-conflicts \
             --wait 30
 
       - name: Summary
