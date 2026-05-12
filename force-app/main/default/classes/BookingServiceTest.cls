@@ -62,13 +62,19 @@ private class BookingServiceTest {
         System.assertEquals(false, BookingService.isValidEmail(null));
     }
 
-    // INTENTIONAL coverage gap: no test for applyRushFee.
-    // Demo flow:
-    //   1. Push this code, validate-pr fails on coverage gate
-    //   2. Add the test below live, push, watch validation pass
-    //
-    // @IsTest
-    // static void applyRushFee_adds25Percent() {
-    //     System.assertEquals(125.00, BookingService.applyRushFee(100.00));
-    // }
+    @IsTest
+    static void applyRushFee_adds25Percent() {
+        System.assertEquals(125.00, BookingService.applyRushFee(100.00));
+    }
+
+    @IsTest
+    static void applyLoyaltyDiscount_appliesPerYearWithCap() {
+        // 5 years → 10% off
+        System.assertEquals(90.00, BookingService.applyLoyaltyDiscount(100.00, 5));
+        // 15 years → capped at 20%
+        System.assertEquals(80.00, BookingService.applyLoyaltyDiscount(100.00, 15));
+        // 0 / null years → no discount
+        System.assertEquals(100.00, BookingService.applyLoyaltyDiscount(100.00, 0));
+        System.assertEquals(100.00, BookingService.applyLoyaltyDiscount(100.00, null));
+    }
 }

@@ -46,6 +46,19 @@ public with sharing class BookingService {
     }
 
     /**
+     * Apply a loyalty discount to a base price. New in this PR — but
+     * intentionally not covered by tests so the matrix coverage gate fails.
+     */
+    public static Decimal applyLoyaltyDiscount(Decimal basePrice, Integer yearsAsCustomer) {
+        if (yearsAsCustomer == null || yearsAsCustomer < 1) {
+            return basePrice;
+        }
+        // 2% per year, capped at 20%.
+        Decimal discountRate = Math.min(yearsAsCustomer * 0.02, 0.20);
+        return basePrice * (1 - discountRate);
+    }
+
+    /**
      * Validate that the email looks well-formed.
      */
     public static Boolean isValidEmail(String email) {

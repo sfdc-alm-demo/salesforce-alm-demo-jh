@@ -53,18 +53,33 @@ jobs:
           mkdir -p test-results
           # `validate` does NOT actually deploy — it just runs metadata checks + tests.
           # The Job ID it returns is what Pattern 3 (Quick Deploy) reuses on merge to main.
+          # Note: SF CLI exits non-zero on validation failure (which is what we want),
+          # but the JSON result still contains useful diagnostics — capture both.
+          set +e
           sf project deploy validate \
             --target-org ${{ matrix.org_alias }}-target \
             --source-dir force-app \
             --test-level RunLocalTests \
             --wait 30 \
             --json > test-results/validate.json
+          EXIT_CODE=$?
+          set -e
 
-          JOB_ID=$(jq -r '.result.id' test-results/validate.json)
-          STATUS=$(jq -r '.result.status' test-results/validate.json)
+          # Always parse what we can.
+          JOB_ID=$(jq -r '.result.id // empty' test-results/validate.json)
+          STATUS=$(jq -r '.result.status // empty' test-results/validate.json)
+          MESSAGE=$(jq -r '.message // empty' test-results/validate.json)
+
           echo "job_id=$JOB_ID" >> "$GITHUB_OUTPUT"
           echo "status=$STATUS" >> "$GITHUB_OUTPUT"
           echo "Validation Job ID: $JOB_ID (status: $STATUS)"
+
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            echo "::error::Salesforce validation failed: $MESSAGE"
+            # Surface failed test details if any.
+            jq -r '.result.details.runTestResult.failures[]? | "  ❌ \(.name).\(.methodName): \(.message)"' test-results/validate.json || true
+            exit 1
+          fi
 
       - name: Validate code coverage
         run: |
@@ -104,3 +119,21 @@ jobs:
           name: validation-job-id
           path: validation-artifact/
           retention-days: 7   # Match Salesforce's 4-day cliff with a small buffer; longer would mislead.
+
+      - name: Comment on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const status = '${{ steps.validation.outputs.status }}' || 'Failed';
+            const jobId = '${{ steps.validation.outputs.job_id }}' || 'n/a';
+            const org = '${{ matrix.org_alias }}';
+            const emoji = status === 'Succeeded' ? '✅' : '❌';
+            const body = `${emoji} **${org}**: validation ${status} (Job ID: \`${jobId}\`)`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
