@@ -176,6 +176,11 @@ Open the Deploy summary. Point out the metadata table at the bottom:
 
 Q&A.
 
+
+OPTIONAL! 
+Open Claude Code on screen.
+ - Run one prompt against the salesforce-alm-github skill: "Add a delta-deployment workflow to this repo using sfdx-git-delta."
+
 ---
 
 ## Recovery scripts
