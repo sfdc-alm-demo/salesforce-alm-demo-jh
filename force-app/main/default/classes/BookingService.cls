@@ -44,7 +44,13 @@ public with sharing class BookingService {
     public static Decimal applyRushFee(Decimal basePrice) {
         return basePrice * 1.25;
     }
-
+    public static Decimal applyLoyaltyDiscount(Decimal basePrice, Integer yearsAsCustomer) {
+        if (yearsAsCustomer == null || yearsAsCustomer < 1) {
+            return basePrice;
+        }
+        Decimal discountRate = Math.min(yearsAsCustomer * 0.02, 0.20);
+        return basePrice * (1 - discountRate);
+    }
     /**
      * Validate that the email looks well-formed.
      */
