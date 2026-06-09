@@ -77,7 +77,7 @@ Switch to the PR in browser. Refresh. The two **Validate against prod** and **Va
 
 Wait ~30 seconds. Both checks fail. Bot leaves two ❌ comments on the PR.
 
-> **Say**: "Salesforce itself rejected the deploy because overall coverage dropped below 75%. I haven't tested my new method, so the org-wide coverage cratered. **The platform's own gate fired before any of my custom logic — that's good.** It's also instant feedback to the developer."
+> **Say**: "Two gates fired. First, Salesforce's own platform gate enforces org-wide 75% coverage during validation — that's non-negotiable. On top of that, our workflow adds a per-class coverage floor so individual classes can't hide behind a passing average. I haven't tested my new method, so both gates tripped. **The platform fired before any of my custom logic — that's the right order.** Instant feedback to the developer."
 
 Open the failing run, scroll to "Run validation deploy with tests". Show the rendered error message: `Salesforce validation failed: ... 57%, pelo menos 75%...`
 
@@ -112,7 +112,7 @@ Open `.github/workflows/validate-pr.yml` in the repo browser. Walk through:
 - The `matrix.org_alias: [prod, sandbox]` block (~line 28)
 - The `sf org login sfdx-url --sfdx-url-file <(printf '%s' "${{ secrets... }}")` line (~line 50). Pause here:
 
-> **Say**: "Look closely at this line. We're not writing the auth URL to a file. We're piping it through process substitution — a transient file descriptor that the kernel destroys when the command exits. The previous version of this skill wrote secrets to a file and `rm`'d them after. That leaks through workflow logs, runner caches, and post-job hooks. This was caught in a Claude Opus 4.7 review of the skill — I'll come back to that at the end."
+> **Say**: "Look closely at this line. We're not writing the auth URL to a file. We're piping it through process substitution — a transient file descriptor the kernel destroys the moment the command exits. The naive approach is to echo the secret into a file and `rm` it afterwards, but that secret can still leak through workflow logs, runner caches, and post-job hooks. Process substitution avoids the disk entirely. The secret never lands anywhere it can be recovered."
 
 Refresh the PR. Both checks now ✅. Bot leaves two ✅ comments.
 
@@ -124,18 +124,18 @@ Open `.github/workflows/deploy-prod.yml` in the repo browser.
 
 > **Say**: "Now let me show you what runs *after* this PR merges. The deploy workflow has two jobs. The **first** is a governance gate that runs *before* secrets are accessible."
 
-Walk through `governance-gate` (lines ~17-44). Pause on the `gh api` call:
+Walk through `governance-gate` (lines 18–55). Pause on the `gh api` call (line 32):
 
 > **Say**: "Custom Properties on the GitHub repo — like compliance-tier and deployment-tier — are read at workflow runtime via the REST API. **They're not exposed as workflow variables**, which is a thing the Sonnet-authored version of this skill got wrong. If this repo isn't tagged compliance-tier=SOX, the gate fails and the deploy job never starts. Compliance enforcement at the gate, not in a Slack message after-the-fact."
 
 Show the repo's Custom Properties: GitHub → repo → Settings → Custom properties. Point out `compliance-tier: SOX`, `deployment-tier: production`.
 
 Walk through the `deploy` job. Highlight:
-- `environment: production` (~line 50) — GitHub Environment with reviewer protection
-- The `Decide quick vs full deploy` step (~line 75): age check against 72-hour buffer
-- The `Quick Deploy` step (~line 95): `sf project deploy quick --job-id`
+- `environment: production` (line 63) — GitHub Environment with reviewer protection
+- The `Decide quick vs full deploy` step (line 90): age check against 72-hour buffer
+- The `Quick Deploy` step (line 113): `sf project deploy quick --job-id`
 
-> **Say**: "Here's the magic. We don't redeploy the whole project. We tell Salesforce: 'Use the validation result from the PR — the one that passed all the tests two minutes ago.' This collapses a 45-minute deploy to under a minute. **Salesforce-side**, those validation results expire in 4 calendar days. We added a 72-hour age check so we never get bitten by an expired validation."
+> **Say**: "Here's the magic. We don't redeploy the whole project. We tell Salesforce: 'Use the validation result from the PR — the one that passed all the tests two minutes ago.' This collapses an 8-minute full deploy down to under a minute. **Salesforce-side**, those validation results expire in 4 calendar days. We added a 72-hour age check so we never get bitten by an expired validation."
 
 ---
 
@@ -170,9 +170,9 @@ Open the Deploy summary. Point out the metadata table at the bottom:
 
 ### Closing — 2 min
 
-> **Say**: "What you just saw is built using the **salesforce-alm-github** Claude Code skill — a 1,500-line skill that knows seven patterns for Salesforce CI/CD. The skill was originally authored with Sonnet 4.5 and contained some technically wrong guidance: an OIDC pattern that wouldn't actually work against Salesforce, security anti-patterns, deprecated CLI commands, and an Agentforce section that promised CI could do things only the runtime Trust Layer can do. We had Opus 4.7 review it, found those issues, fixed them. The repo I just demoed was built using the v2 skill — every workflow, every error-handling decision, every security pattern."
+> **Say**: "30 seconds from merge to production. Parallel validation across orgs. Compliance enforced at the gate, not after the fact. Secrets that never touch disk. Quick Deploy reusing test results we already trust. That's not seven tools stitched together — it's one opinionated pattern, encoded once, and every team that adopts it gets the same hardened result."
 
-> "If your team wants this — both the skill and a working reference implementation — both repos are public on github.com/sfdc-alm-demo and github.com/alansf/salesforce-alm-github. The skill's CHANGELOG documents what changed between v1 and v2 with all the breaking-change notes."
+> "Your team can have this running in an afternoon. The reference implementation is public at github.com/sfdc-alm-demo — point it at your repo and you're off."
 
 Q&A.
 
@@ -190,7 +190,7 @@ Open Claude Code on screen.
 If validate-pr exceeds ~3 min, something's wrong with the scratch org. Skip the live demo of validation and pre-show the previous successful run:
 
 ```bash
-gh run view 25711956239 --repo sfdc-alm-demo/salesforce-alm-demo-jh --web
+gh run view 25936694521 --repo sfdc-alm-demo/salesforce-alm-demo-jh --web
 ```
 
 ### "The Auth URL secret expired"
@@ -212,18 +212,26 @@ sf project deploy start --target-org prod-demo --source-dir force-app
 # Then re-extract Auth URL as above
 ```
 
-### "I need to reset to a clean state for a re-demo"
+### "I need to reset to a clean state for a re-demo" (pre-loyalty state)
+
+The demo depends on `applyLoyaltyDiscount` NOT existing yet on main (you add it live in Act 1). Reset to the pre-loyalty state:
 
 ```bash
 cd ~/Development/salesforce-alm-demo-jh
-git checkout main && git pull
-# Close any open PRs
+# Close any open PRs and clean branches
 gh pr list --json number -q '.[].number' | xargs -I {} gh pr close {} --delete-branch
-# Delete any feature branches locally
+git checkout main && git pull
 git branch | grep -v 'main' | xargs git branch -D 2>/dev/null
-# Reset BookingService to the post-fix state if you accidentally edited
-git checkout main -- force-app/
+
+# Reset main to the pre-loyalty commit and force-push
+git reset --hard 5da4a6e   # "Reset to pre-loyalty state for demo"
+git push --force-with-lease origin main
+
+# Verify: applyLoyaltyDiscount should NOT appear in BookingService
+grep -c 'applyLoyaltyDiscount' force-app/main/default/classes/BookingService.cls && echo "ERROR: loyalty method still present" || echo "✅ Ready for demo"
 ```
+
+**After the demo**: the merge in Act 4 will push the loyalty code back to main, returning the repo to its normal state.
 
 ### "Quick Deploy fell back to Full Deploy unexpectedly"
 
