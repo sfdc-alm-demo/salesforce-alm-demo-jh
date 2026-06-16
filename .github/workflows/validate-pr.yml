@@ -157,11 +157,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # PMD / CPD / Graph Engine need a real JDK; pin it so the Apex SAST rules
+      # actually run (without Java the engines report as Critical 'engine could
+      # not instantiate' errors and the gate fails for the wrong reason).
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
       - name: Install Salesforce CLI + Code Analyzer
         run: |
           npm install -g @salesforce/cli@latest
           sf plugins install code-analyzer@latest
-          sf code-analyzer --version
+          sf code-analyzer rules --rule-selector Recommended --view table >/dev/null
 
       - name: Run Code Analyzer (SAST + SCA)
         id: sca
