@@ -62,14 +62,13 @@ private class BookingServiceTest {
         System.assertEquals(false, BookingService.isValidEmail(null));
     }
 
-    // Demo: tests for applyRushFee and applyLoyaltyDiscount are deliberately
-    // omitted here. Act 2 of the demo uncomments / pastes them in to fix the
-    // coverage gate.
-    //
-    // @IsTest
-    // static void applyRushFee_adds25Percent() {
-    //     System.assertEquals(125.00, BookingService.applyRushFee(100.00));
-    // }
+    // Demo: applyLoyaltyDiscount test stays commented (that method only exists
+    // after Act 1's live edit). The applyRushFee test below is added here to
+    // close the coverage gap so this verification PR goes green.
+    @IsTest
+    static void applyRushFee_adds25Percent() {
+        System.assertEquals(125.00, BookingService.applyRushFee(100.00));
+    }
     //
     // @IsTest
     // static void applyLoyaltyDiscount_appliesPerYearWithCap() {
