@@ -137,3 +137,199 @@ jobs:
               issue_number: context.issue.number,
               body
             });
+
+  # ---------------------------------------------------------------------------
+  # SCA gate (added at account-team request): Static + Software Composition Analysis.
+  # Salesforce Code Analyzer v5 bundles two distinct concerns under one gate:
+  #   - SAST  : PMD (Apex security/quality) + ESLint (LWC) — analyses YOUR code.
+  #   - SCA   : Retire.js — flags third-party JS libraries with known CVEs (the
+  #             literal "software composition" / supply-chain check).
+  # Runs against source only — NO org auth, NO data access — so it's the fastest,
+  # safest gate and runs fully in parallel with the matrix validation above.
+  # The gate blocks only on Critical/High (severity 1–2); Moderate/Low/Info are
+  # captured as evidence but don't fail the build — high signal, low noise.
+  # NOTE: Retire.js needs JS/LWC to find dependency CVEs; on an Apex-only repo the
+  # SCA engine simply reports clean and PMD security rules carry the gate.
+  # ---------------------------------------------------------------------------
+  sca:
+    name: Static + composition analysis (SCA)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # PMD / CPD / Graph Engine need a real JDK; pin it so the Apex SAST rules
+      # actually run (without Java the engines report as Critical 'engine could
+      # not instantiate' errors and the gate fails for the wrong reason).
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install Salesforce CLI + Code Analyzer
+        run: |
+          npm install -g @salesforce/cli@latest
+          sf plugins install code-analyzer@latest
+          sf code-analyzer rules --rule-selector Recommended --view table >/dev/null
+
+      - name: Run Code Analyzer (SAST + SCA)
+        id: sca
+        run: |
+          mkdir -p sca-results
+          # --severity-threshold 2 makes the CLI exit non-zero on any Critical(1)
+          # or High(2) finding. That exit code IS the gate; the jq below is only
+          # for a friendly summary and is fully guarded so a parse change can
+          # never silently pass or break the build.
+          set +e
+          sf code-analyzer run \
+            --workspace force-app \
+            --rule-selector Recommended \
+            --severity-threshold 2 \
+            --output-file sca-results/code-analyzer.sarif \
+            --output-file sca-results/code-analyzer.html \
+            --output-file sca-results/code-analyzer.json
+          EXIT_CODE=$?
+          set -e
+
+          HIGH=$(jq '[.violations[]? | select(.severity <= 2)] | length' sca-results/code-analyzer.json 2>/dev/null || echo 0)
+          TOTAL=$(jq '.violations | length' sca-results/code-analyzer.json 2>/dev/null || echo 0)
+          echo "high=${HIGH:-0}" >> "$GITHUB_OUTPUT"
+          echo "total=${TOTAL:-0}" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### SCA gate"
+            echo "- **Engines**: PMD + ESLint (SAST), Retire.js (SCA)"
+            echo "- **Critical/High**: ${HIGH:-0}"
+            echo "- **Total findings**: ${TOTAL:-0}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            echo "::error::SCA gate failed — ${HIGH:-0} Critical/High finding(s). See the code-analyzer artifact."
+            exit 1
+          fi
+          echo "✅ SCA gate passed — ${TOTAL:-0} finding(s), 0 Critical/High."
+
+      - name: Upload SCA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sca-report
+          path: sca-results/
+          retention-days: 7   # SOX build-audit evidence: security scan per PR.
+
+      - name: Comment on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const outcome = '${{ steps.sca.outcome }}';
+            const high = '${{ steps.sca.outputs.high }}' || '0';
+            const total = '${{ steps.sca.outputs.total }}' || '0';
+            const emoji = outcome === 'success' ? '✅' : '❌';
+            const body = `${emoji} **SCA**: ${high} Critical/High, ${total} total (PMD + ESLint + Retire.js)`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+  # ---------------------------------------------------------------------------
+  # Test-automation gate (added at account-team request): isolated automated suite.
+  # The coverage gate above proves "enough lines were exercised." This gate proves
+  # "the full automated suite ran green against the PR's actual code" and emits
+  # JUnit XML as a first-class, standalone SOX build-audit artifact.
+  #
+  # Why a fresh scratch org per PR: running tests against the shared prod/sandbox
+  # orgs would either race the matrix validation or test STALE code (the PR's new
+  # classes aren't deployed there yet). An ephemeral org is the only way to run the
+  # automated suite against exactly this PR's source in isolation. Org is always
+  # deleted, even on failure.
+  # Requires one new secret: SFDX_AUTH_URL_DEVHUB (an auth URL for the Dev Hub).
+  # ---------------------------------------------------------------------------
+  test-automation:
+    name: Automated test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: |
+          npm install -g @salesforce/cli@latest
+          sf --version
+
+      - name: Authenticate to Dev Hub
+        run: |
+          # Same no-secret-at-rest pattern as the matrix job (Pattern 2): the auth
+          # URL is piped through a transient FD, never written to disk.
+          sf org login sfdx-url \
+            --sfdx-url-file <(printf '%s' "${{ secrets.SFDX_AUTH_URL_DEVHUB }}") \
+            --alias devhub \
+            --set-default-dev-hub
+
+      - name: Create ephemeral test scratch org
+        run: |
+          sf org create scratch \
+            --definition-file config/project-scratch-def.json \
+            --alias pr-test \
+            --duration-days 1 \
+            --wait 10 \
+            --set-default
+
+      - name: Deploy PR source (no tests on deploy)
+        run: |
+          # Deploy without running tests, then run the suite explicitly so the
+          # JUnit evidence is a clean, standalone artifact.
+          sf project deploy start \
+            --target-org pr-test \
+            --source-dir force-app \
+            --test-level NoTestRun \
+            --wait 30
+
+      - name: Run automated test suite (JUnit evidence)
+        id: tests
+        run: |
+          mkdir -p test-results
+          set +e
+          sf apex run test \
+            --target-org pr-test \
+            --test-level RunLocalTests \
+            --code-coverage \
+            --result-format junit \
+            --output-dir test-results \
+            --wait 30
+          EXIT_CODE=$?
+          set -e
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            echo "::error::Automated test suite failed — see the junit-test-evidence artifact."
+            exit 1
+          fi
+          echo "✅ Automated test suite passed."
+
+      - name: Upload JUnit test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-test-evidence
+          path: test-results/
+          retention-days: 7   # SOX build-audit evidence: tests-passed proof per PR.
+
+      - name: Delete ephemeral scratch org
+        if: always()   # Never leak a scratch org, even when the suite fails.
+        run: |
+          sf org delete scratch --target-org pr-test --no-prompt || true
+
+      - name: Comment on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const outcome = '${{ steps.tests.outcome }}';
+            const emoji = outcome === 'success' ? '✅' : '❌';
+            const body = `${emoji} **Test automation**: RunLocalTests on an isolated scratch org (JUnit evidence attached)`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
