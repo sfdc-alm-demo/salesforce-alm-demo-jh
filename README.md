@@ -12,6 +12,8 @@ This repo is the *outcome* you can build using the [`salesforce-alm-github`](htt
 | **JWT + Custom Properties governance** | `deploy-prod.yml` — `governance-gate` job reads repo properties via `gh api` before secrets are available | Compliance enforcement at the deploy gate, not a Slack message |
 | **Quick Deploy with 4-day fallback** | `deploy-prod.yml` — Job ID artifact passed from PR validation, age-checked before reuse | 45-min deploys → 90 sec |
 | **Custom Properties for conditional flows** | `validate-pr.yml` — different test thresholds per `compliance-tier` | Single workflow, many policies |
+| **SCA gate** | `validate-pr.yml` — `sca` job runs Salesforce Code Analyzer (PMD + ESLint SAST, Retire.js SCA), blocks on Critical/High | Security + supply-chain evidence, no org access |
+| **Test-automation gate** | `validate-pr.yml` — `test-automation` job runs the full suite on an isolated per-PR scratch org, emits JUnit | Standalone tests-passed evidence against the PR's actual code |
 
 ## Demo arc (20 min)
 
@@ -50,6 +52,7 @@ sf project deploy start --target-org sandbox-demo
 GitHub Actions side requires:
 - Connected App + JWT keypair in each scratch org (see `docs/setup.md`)
 - GitHub Secrets: `SF_CONSUMER_KEY_PROD`, `SF_CONSUMER_KEY_SANDBOX`, `SF_JWT_KEY`, `SF_USERNAME_PROD`, `SF_USERNAME_SANDBOX`
+- GitHub Secret for the test-automation gate: `SFDX_AUTH_URL_DEVHUB` (Dev Hub auth URL, used to spin up the ephemeral per-PR scratch org)
 - GitHub Custom Properties: `compliance-tier` (SOX | HIPAA | PCI | Standard), `deployment-tier` (dev | qa | staging | production)
 - GitHub Environments: `production`, `sandbox`
 
