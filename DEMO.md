@@ -223,12 +223,17 @@ gh pr list --json number -q '.[].number' | xargs -I {} gh pr close {} --delete-b
 git checkout main && git pull
 git branch | grep -v 'main' | xargs git branch -D 2>/dev/null
 
-# Reset main to the pre-loyalty commit and force-push
-git reset --hard 5da4a6e   # "Reset to pre-loyalty state for demo"
+# Reset main to the pre-loyalty baseline and force-push.
+# NOTE: use the `demo-baseline` tag, NOT the old 5da4a6e commit — 5da4a6e
+# predates the SCA + test-automation gates and would wipe them off main.
+git fetch origin --tags
+git reset --hard demo-baseline   # pre-loyalty state WITH the new gates
 git push --force-with-lease origin main
 
-# Verify: applyLoyaltyDiscount should NOT appear in BookingService
-grep -c 'applyLoyaltyDiscount' force-app/main/default/classes/BookingService.cls && echo "ERROR: loyalty method still present" || echo "✅ Ready for demo"
+# Verify: applyLoyaltyDiscount should NOT appear in BookingService...
+grep -c 'applyLoyaltyDiscount' force-app/main/default/classes/BookingService.cls && echo "ERROR: loyalty method still present" || echo "✅ pre-loyalty state OK"
+# ...and the two new gates SHOULD be present in the workflow
+grep -qE '^  sca:' .github/workflows/validate-pr.yml && grep -qE '^  test-automation:' .github/workflows/validate-pr.yml && echo "✅ SCA + test-automation gates present" || echo "ERROR: new gates missing — you reset too far back"
 ```
 
 **After the demo**: the merge in Act 4 will push the loyalty code back to main, returning the repo to its normal state.
