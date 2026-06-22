@@ -62,10 +62,12 @@ private class BookingServiceTest {
         System.assertEquals(false, BookingService.isValidEmail(null));
     }
 
-    Demo: tests for applyRushFee and applyLoyaltyDiscount are deliberately
-    omitted here. Act 2 of the demo uncomments / pastes them in to fix the
-    coverage gate.
-    
+    /*
+     * Demo: tests for applyRushFee and applyLoyaltyDiscount are deliberately
+     * omitted here. Act 2 of the demo uncomments / pastes them in to fix the
+     * coverage gate.
+     */
+
     @IsTest
     static void applyRushFee_adds25Percent() {
         System.assertEquals(125.00, BookingService.applyRushFee(100.00));
