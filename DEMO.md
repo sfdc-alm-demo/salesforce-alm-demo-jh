@@ -214,21 +214,25 @@ sf project deploy start --target-org prod-demo --source-dir force-app
 
 ### "I need to reset to a clean state for a re-demo" (pre-loyalty state)
 
-The demo depends on `applyLoyaltyDiscount` NOT existing yet on main (you add it live in Act 1). Reset to the pre-loyalty state:
+The demo depends on `applyLoyaltyDiscount` NOT existing yet on main (you add it live in Act 1). The correct pre-loyalty target is `f040c22` ("Add SCA + test-automation gates") — loyalty method absent, but the SCA + test-automation gates still present. Do NOT reset further back than this (e.g. `5da4a6e`), or you'll strip the gates out of `validate-pr.yml` and two demo patterns disappear.
 
 ```bash
 cd ~/Development/salesforce-alm-demo-jh
+# Pushing this repo needs the alansf GitHub account (the sfemu account gets a 403)
+gh auth switch --user alansf
+
 # Close any open PRs and clean branches
 gh pr list --json number -q '.[].number' | xargs -I {} gh pr close {} --delete-branch
 git checkout main && git pull
 git branch | grep -v 'main' | xargs git branch -D 2>/dev/null
 
 # Reset main to the pre-loyalty commit and force-push
-git reset --hard 5da4a6e   # "Reset to pre-loyalty state for demo"
+git reset --hard f040c22   # "Add SCA + test-automation gates" — gates present, loyalty absent
 git push --force-with-lease origin main
 
-# Verify: applyLoyaltyDiscount should NOT appear in BookingService
-grep -c 'applyLoyaltyDiscount' force-app/main/default/classes/BookingService.cls && echo "ERROR: loyalty method still present" || echo "✅ Ready for demo"
+# Verify: applyLoyaltyDiscount absent, both gates present
+grep -c 'applyLoyaltyDiscount' force-app/main/default/classes/BookingService.cls && echo "ERROR: loyalty method still present" || echo "✅ loyalty absent"
+[ "$(grep -cE 'sca:|test-automation:' .github/workflows/validate-pr.yml)" = "2" ] && echo "✅ gates present — ready for demo" || echo "ERROR: SCA/test-automation gates missing"
 ```
 
 **After the demo**: the merge in Act 4 will push the loyalty code back to main, returning the repo to its normal state.
