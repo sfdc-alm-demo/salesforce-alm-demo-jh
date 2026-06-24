@@ -62,20 +62,27 @@ private class BookingServiceTest {
         System.assertEquals(false, BookingService.isValidEmail(null));
     }
 
-    // Demo: tests for applyRushFee and applyLoyaltyDiscount are deliberately
-    // omitted here. Act 2 of the demo uncomments / pastes them in to fix the
-    // coverage gate.
-    //
-    // @IsTest
-    // static void applyRushFee_adds25Percent() {
-    //     System.assertEquals(125.00, BookingService.applyRushFee(100.00));
-    // }
-    //
-    // @IsTest
-    // static void applyLoyaltyDiscount_appliesPerYearWithCap() {
-    //     System.assertEquals(90.00, BookingService.applyLoyaltyDiscount(100.00, 5));
-    //     System.assertEquals(80.00, BookingService.applyLoyaltyDiscount(100.00, 15));
-    //     System.assertEquals(100.00, BookingService.applyLoyaltyDiscount(100.00, 0));
-    //     System.assertEquals(100.00, BookingService.applyLoyaltyDiscount(100.00, null));
-    // }
+    @IsTest
+    static void applyRushFee_adds25Percent() {
+        Test.startTest();
+        Decimal result = BookingService.applyRushFee(100.00);
+        Test.stopTest();
+
+        System.assertEquals(125.00, result, 'Rush fee should add 25%');
+    }
+
+    @IsTest
+    static void applyLoyaltyDiscount_appliesPerYearWithCap() {
+        Test.startTest();
+        Decimal five  = BookingService.applyLoyaltyDiscount(100.00, 5);
+        Decimal cap   = BookingService.applyLoyaltyDiscount(100.00, 15);
+        Decimal zero  = BookingService.applyLoyaltyDiscount(100.00, 0);
+        Decimal nullY = BookingService.applyLoyaltyDiscount(100.00, null);
+        Test.stopTest();
+
+        System.assertEquals(90.00,  five,  '5 years → 10% off');
+        System.assertEquals(80.00,  cap,   '15 years → 20% cap');
+        System.assertEquals(100.00, zero,  '0 years → no discount');
+        System.assertEquals(100.00, nullY, 'null years → no discount');
+    }
 }
