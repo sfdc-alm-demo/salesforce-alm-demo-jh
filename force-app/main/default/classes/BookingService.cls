@@ -46,6 +46,26 @@ public with sharing class BookingService {
     }
 
     /**
+     * Apply a loyalty discount: 2% per year of tenure, capped at 20%.
+     * No discount is applied for customers with fewer than 1 year of tenure.
+     *
+     * @param basePrice       The original price before discount.
+     * @param yearsAsCustomer Number of full years the customer has been with the company.
+     * @return                The discounted price.
+     * @throws BookingException if basePrice is null or non-positive.
+     */
+    public static Decimal applyLoyaltyDiscount(Decimal basePrice, Integer yearsAsCustomer) {
+        if (basePrice == null || basePrice <= 0) {
+            throw new BookingException('Base price must be positive');
+        }
+        if (yearsAsCustomer == null || yearsAsCustomer < 1) {
+            return basePrice;
+        }
+        Decimal discountRate = Math.min(yearsAsCustomer * 0.02, 0.20);
+        return basePrice * (1 - discountRate);
+    }
+
+    /**
      * Validate that the email looks well-formed.
      */
     public static Boolean isValidEmail(String email) {
