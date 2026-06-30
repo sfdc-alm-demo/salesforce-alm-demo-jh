@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auction__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Auction for which bid is placed</description>
+    <label>Auction</label>
+    <referenceTo>SDO_SCOM_Auction__c</referenceTo>
+    <relationshipLabel>Auction Bids</relationshipLabel>
+    <relationshipName>Auction_Bids</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Report__c</fullName>
+    <label>Report</label>
+    <referenceTo>DBM_Report__c</referenceTo>
+    <relationshipLabel>DBM Report Groupings</relationshipLabel>
+    <relationshipName>DBM_Report_Groupings</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

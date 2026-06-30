@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Match_Confidence__c</fullName>
+    <description>Confidence threshold the agent uses when this pattern matches. 0.85+ = Tier 1 candidate, 0.60-0.849 = Tier 2.</description>
+    <externalId>false</externalId>
+    <label>Match Confidence</label>
+    <precision>5</precision>
+    <required>true</required>
+    <scale>4</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

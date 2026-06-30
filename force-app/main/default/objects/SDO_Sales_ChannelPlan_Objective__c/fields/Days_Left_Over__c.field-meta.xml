@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Days_Left_Over__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (ISPICKVAL (Status__c, &quot;Accomplished Objective&quot;),0,     IF (ISPICKVAL (Status__c, &quot;Exceeded Expectations&quot;),0,End_Date__c-TODAY()))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Days Left/ (Over)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

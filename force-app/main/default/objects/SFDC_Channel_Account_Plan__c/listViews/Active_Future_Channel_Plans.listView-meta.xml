@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Future_Channel_Plans</fullName>
+    <columns>NAME</columns>
+    <columns>SDO_Experience_Status__c</columns>
+    <columns>SDO_Experience_Active__c</columns>
+    <columns>SDO_Experience_Target__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SDO_Experience_CompanyChannel__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Active &amp; Future Channel Plans</label>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

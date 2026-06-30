@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Telco_Customers</fullName>
+    <columns>NAME</columns>
+    <columns>First_Name__c</columns>
+    <columns>Last_Name__c</columns>
+    <columns>Mailing_State__c</columns>
+    <columns>Likelihood_to_Attrit_in_First_Year__c</columns>
+    <columns>First_Year_Attrition_Outcome__c</columns>
+    <columns>Contract__c</columns>
+    <columns>Activation_Date__c</columns>
+    <columns>Deactivation_Date__c</columns>
+    <columns>Internet_Service__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>Telco Customers</label>
+</ListView>

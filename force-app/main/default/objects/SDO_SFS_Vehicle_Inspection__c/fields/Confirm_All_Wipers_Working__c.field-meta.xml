@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Confirm_All_Wipers_Working__c</fullName>
+    <defaultValue>false</defaultValue>
+    <label>Confirm All Wipers Working</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

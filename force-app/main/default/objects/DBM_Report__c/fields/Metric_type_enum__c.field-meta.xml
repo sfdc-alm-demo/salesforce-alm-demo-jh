@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Metric_type_enum__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(CONTAINS(TEXT(Metric_Type__c), &quot;currency&quot;), &quot;currency&quot;,
+  IF(CONTAINS(TEXT(Metric_Type__c), &quot;percent&quot;), &quot;percent&quot;,
+    &quot;number&quot;
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Metric type enum</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

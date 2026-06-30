@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Setup_Page_Layout</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Setup: Page Layout</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>https://na5.salesforce.com/setup/layout/layoutdnd.jsp?type=01IHu000008ADRm&amp;lid=00hHu00000vRm5E&amp;e=1&amp;retURL=%2F01IHu000008ADRm&amp;setupid=CustomObjects</url>
+</WebLink>

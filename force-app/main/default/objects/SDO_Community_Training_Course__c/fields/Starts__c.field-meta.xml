@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Starts__c</fullName>
+    <defaultValue>NOW() + 5</defaultValue>
+    <inlineHelpText>Start date &amp; time for the course.</inlineHelpText>
+    <label>Starts</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

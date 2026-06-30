@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Courses</fullName>
+    <columns>NAME</columns>
+    <columns>Short_Description__c</columns>
+    <columns>Course_Image__c</columns>
+    <columns>Course_Format__c</columns>
+    <columns>Display_Priority__c</columns>
+    <columns>Course_Flag__c</columns>
+    <columns>Starts__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Available_for_Registration__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Course_Flag__c</field>
+        <operation>equals</operation>
+        <value>New!</value>
+    </filters>
+    <label>New Courses</label>
+</ListView>

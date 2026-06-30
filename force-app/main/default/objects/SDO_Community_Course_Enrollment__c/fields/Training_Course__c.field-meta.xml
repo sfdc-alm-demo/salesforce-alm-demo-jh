@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Training_Course__c</fullName>
+    <inlineHelpText>Which training course is this enrollment for?</inlineHelpText>
+    <label>Training Course</label>
+    <referenceTo>SDO_Community_Training_Course__c</referenceTo>
+    <relationshipLabel>Enrollment</relationshipLabel>
+    <relationshipName>Course_Enrollments</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>true</writeRequiresMasterRead>
+</CustomField>

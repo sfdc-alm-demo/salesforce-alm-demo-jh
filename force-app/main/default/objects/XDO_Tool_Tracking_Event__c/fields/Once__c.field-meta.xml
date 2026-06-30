@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Once__c</fullName>
+    <businessStatus>Active</businessStatus>
+    <defaultValue>false</defaultValue>
+    <description>Only raise a single instance of the event determined by the value in the Action property</description>
+    <inlineHelpText>Only raise a single instance of the event determined by the value in the Action property</inlineHelpText>
+    <label>Once?</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

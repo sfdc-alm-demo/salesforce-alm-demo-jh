@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage__c</fullName>
+    <externalId>false</externalId>
+    <formula>if ( Days_Left_Over__c &lt; 0, &quot;Overdue&quot;, if( Days_Left_Over__c &gt; 0, &quot;In Progress&quot;, &quot;Complete&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Stage</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

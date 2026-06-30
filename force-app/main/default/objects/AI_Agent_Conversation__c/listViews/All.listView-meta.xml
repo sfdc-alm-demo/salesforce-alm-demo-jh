@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>AI_Agent__c</columns>
+    <columns>Flag__c</columns>
+    <columns>Flag_Reason__c</columns>
+    <columns>Summary__c</columns>
+    <columns>Contact_Name__c</columns>
+    <columns>Conversation_Start_Seconds__c</columns>
+    <columns>Newest_Message_Date__c</columns>
+    <columns>Conversation_Summary__c</columns>
+    <columns>Conversation_Summary_Issue__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All AI Agent Conversations</label>
+</ListView>

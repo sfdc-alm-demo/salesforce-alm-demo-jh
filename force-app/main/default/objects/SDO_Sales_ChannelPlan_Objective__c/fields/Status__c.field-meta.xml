@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>New</fullName>
+                <default>true</default>
+                <label>New</label>
+            </value>
+            <value>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+                <label>In Progress</label>
+            </value>
+            <value>
+                <fullName>Half-way</fullName>
+                <default>false</default>
+                <label>Half-way</label>
+            </value>
+            <value>
+                <fullName>Three Quarters</fullName>
+                <default>false</default>
+                <label>Three Quarters</label>
+            </value>
+            <value>
+                <fullName>Accomplished Objective</fullName>
+                <default>false</default>
+                <label>Accomplished Objective</label>
+            </value>
+            <value>
+                <fullName>Exceeded Expectations</fullName>
+                <default>false</default>
+                <label>Exceeded Expectations</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ObjectivesDueNext30Days</fullName>
+    <columns>NAME</columns>
+    <columns>Channel_Account_Plan__c</columns>
+    <columns>End_Date__c</columns>
+    <columns>Stage__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>End_Date__c</field>
+        <operation>equals</operation>
+        <value>NEXT_N_DAYS:30</value>
+    </filters>
+    <label>Objectives Due - Next 30 Days</label>
+    <language>en_US</language>
+</ListView>

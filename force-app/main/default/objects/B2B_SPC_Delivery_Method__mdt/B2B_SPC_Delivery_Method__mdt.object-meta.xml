@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>What: B2B Commerce for Delivery Methods</description>
+    <label>B2B SPC Delivery Method</label>
+    <pluralLabel>B2B SPC Delivery Methods</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

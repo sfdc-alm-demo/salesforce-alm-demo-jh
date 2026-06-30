@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Determines settings and permissions for Heroku AppLink app RevenueIntelligenceEngine</description>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>Revenue_Intelligence_Engine-RevenueIntelligenceEnginePrincipal</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
+    <hasActivationRequired>true</hasActivationRequired>
+    <label>Revenue Intelligence Perm Set</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManageHerokuAppLink</name>
+    </userPermissions>
+</PermissionSet>

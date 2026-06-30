@@ -1,0 +1,74 @@
+<template>
+    <template if:true={isDebug}>
+        <h2>v13</h2>
+        <div style="font-size:10px;word-break:break-all">
+            <h3>debugJson</h3>
+            {debugJson}
+        </div>
+
+        <div style="font-size:10px;word-break:break-all">
+            <h3>debugUpdate</h3>
+            {debugUpdate}
+        </div>
+        
+        <div style="font-size:10px;word-break:break-all">
+            <h3>debugErrors</h3>
+            {debugErrors}
+        </div>
+        
+    </template>
+
+    <lightning-card title="Inventory Count">
+        <div class="slds-p-around_medium">
+            <lightning-input 
+                type="date" 
+                label="Select Date" 
+                value={inputDate}
+                onchange={handleDateChange}>
+            </lightning-input>
+
+            <lightning-button 
+                class="slds-m-left_small"
+                label="Search"
+                onclick={handleSearch}
+                variant="brand">
+            </lightning-button>
+        </div>
+        
+        <template if:true={data}>
+            <template for:each={data} for:item="record">
+                <div key={record.recordId} class="slds-grid slds-p-around_medium">
+                    <div class="slds-col slds-size_9-of-12">
+                        <span class="slds-text-title_bold">{record.productName}</span>
+                    </div>
+
+                    <div class="slds-col slds-size_3-of-12">
+                        <lightning-input
+                            type="number"
+                            value={record.quantity}
+                            data-id={record.recordId}
+                            onchange={handleQuantityChange}
+                            variant="label-hidden"
+                            class="inventory-count-input"
+                        ></lightning-input>
+                    </div>
+                </div>
+            </template>
+            <lightning-button
+                label="Update Inventory"
+                onclick={handleSave}
+                variant="brand"
+                class="slds-m-top_medium slds-p-around_medium"
+            ></lightning-button>
+
+        </template>
+
+        <template if:true={showNoResults}>
+            <div class="slds-p-around_medium">No records found for the selected date.</div>
+        </template>
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+    </lightning-card>
+</template>

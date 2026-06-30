@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conversation_Start_Seconds__c</fullName>
+    <defaultValue>60</defaultValue>
+    <description>How many seconds the conversation has been going on at page load. Page will then start counting up.</description>
+    <externalId>false</externalId>
+    <label>Conversation Start Seconds</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

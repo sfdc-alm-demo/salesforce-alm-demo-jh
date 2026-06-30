@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Includes access to External IDs, Record Types, and Objects for Platform PMT</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.External_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>inov8__PMT_Phase__c.External_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Platform - PMT Base Access</label>
+</PermissionSet>

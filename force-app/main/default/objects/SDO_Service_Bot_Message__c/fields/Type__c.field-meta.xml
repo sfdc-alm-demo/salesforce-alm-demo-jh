@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <label>Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Joke</fullName>
+                <default>false</default>
+                <label>Joke</label>
+            </value>
+            <value>
+                <fullName>Gratitude</fullName>
+                <default>false</default>
+                <label>Gratitude</label>
+            </value>
+            <value>
+                <fullName>Greetings</fullName>
+                <default>false</default>
+                <label>Greetings</label>
+            </value>
+            <value>
+                <fullName>Chit Chat</fullName>
+                <default>false</default>
+                <label>Chit Chat</label>
+            </value>
+            <value>
+                <fullName>Confused</fullName>
+                <default>false</default>
+                <label>Confused</label>
+            </value>
+            <value>
+                <fullName>End Chat</fullName>
+                <default>false</default>
+                <label>End Chat</label>
+            </value>
+            <value>
+                <fullName>Anything Else</fullName>
+                <default>false</default>
+                <label>Anything Else</label>
+            </value>
+            <value>
+                <fullName>Profanity</fullName>
+                <default>false</default>
+                <label>Profanity</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

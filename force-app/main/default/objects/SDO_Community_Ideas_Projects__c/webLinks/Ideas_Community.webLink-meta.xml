@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ideas_Community</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Ideas Community</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>https://na5.salesforce.com/ideas/ideaList.apexp</url>
+</WebLink>

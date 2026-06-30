@@ -1,0 +1,26 @@
+<template>
+    <template if:true={isReady}>
+        
+        <template lwc:if={isAvailable}>
+            <p>
+                <span class="indicator"></span>&nbsp;In Stock
+                <span class="stock-details">{stockDetailsText}</span>
+            </p>
+        </template>
+
+        <template lwc:elseif={isLowStock}>
+            <p>
+                <span class="lowstock"></span>&nbsp;Low Stock
+                <span class="stock-details">{stockDetailsText}</span>
+            </p>
+        </template>
+
+        <template lwc:else>
+            <p>
+                <span class="outofstock"></span>&nbsp;Out of Stock
+                <span class="stock-details">{stockDetailsText}</span>
+            </p>
+        </template>
+
+    </template>
+</template>

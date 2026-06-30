@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsDemoResponse__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used for demo responses to automate a conversation while monitoring - will send each response with this set to true every 3 seconds</description>
+    <label>IsDemoResponse</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

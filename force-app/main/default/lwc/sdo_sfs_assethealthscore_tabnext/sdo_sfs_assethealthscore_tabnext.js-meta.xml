@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<masterLabel>Asset Health Score</masterLabel>
+	<apiVersion>63.0</apiVersion>
+	<isExposed>true</isExposed>
+	<targets>
+		<target>lightning__RecordPage</target>
+	</targets>
+	<targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property 
+                name="assetHealthScore" 
+                type="String" 
+                label="Asset Health Score" 
+                default="25.8K"
+                description="The overall health score of the asset." />
+            <property 
+                name="daysSinceInstallation" 
+                type="String" 
+                label="Days Since Installation" 
+                default="157.7K"
+                description="Number of days since the asset was installed." />
+            <property 
+                name="maximumExpectedLife" 
+                type="String" 
+                label="Maximum Expected Life" 
+                default="2.7K"
+                description="The maximum expected life of the asset in days." />
+            <property 
+                name="totalUsage" 
+                type="String" 
+                label="Total Usage" 
+                default="173.2K"
+                description="The total usage of the asset." />
+            <property 
+                name="maximumExpectedUsage" 
+                type="String" 
+                label="Maximum Expected Usage" 
+                default="4.4M"
+                description="The maximum expected usage of the asset." />
+            <property 
+                name="repairsInLastSixMonths" 
+                type="String" 
+                label="Repairs In The Last 6 Months" 
+                default="—"
+                description="Number of repairs in the last six months." />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

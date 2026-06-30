@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDO_FAQ_Articles</fullName>
+    <columns>TITLE</columns>
+    <columns>LAST_PUBLISHED_DATE</columns>
+    <columns>VALIDATION_STATUS_ENUM</columns>
+    <columns>Article_Confidence__c</columns>
+    <columns>ABSTRACT</columns>
+    <columns>Featured_in_Communities__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PUBLISH_STATUS</field>
+        <operation>equals</operation>
+        <value>2</value>
+    </filters>
+    <filters>
+        <field>LANGUAGE</field>
+        <operation>equals</operation>
+        <value>en_US</value>
+    </filters>
+    <filters>
+        <field>RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Knowledge__kav.SDO_Knowledge_FAQ</value>
+    </filters>
+    <label>FAQ Articles</label>
+</ListView>

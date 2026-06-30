@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Course_Image__c</fullName>
+    <inlineHelpText>URL to an image representing this course. Will be used on pages in Lightning Community and Salesforce CMS.</inlineHelpText>
+    <label>Course Image</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Url</type>
+</CustomField>

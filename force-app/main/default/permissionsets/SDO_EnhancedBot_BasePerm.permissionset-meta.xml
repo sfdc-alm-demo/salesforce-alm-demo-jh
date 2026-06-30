@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permissions needed for Enhanced bot usage and deployments</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.SDO_LiveMessaging_Subject__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MessagingSession.SDO_MessagingSession_BotName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.External_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Enhanced Bot - Base Permissions</label>
+</PermissionSet>

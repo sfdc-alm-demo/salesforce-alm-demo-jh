@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exercise</fullName>
+    <active>true</active>
+    <label>Exercise</label>
+    <picklistValues>
+        <picklist>Type__c</picklist>
+        <values>
+            <fullName>Audio Recording</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Document</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lesson</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Link</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Scheduled Event</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trailhead</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Video</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

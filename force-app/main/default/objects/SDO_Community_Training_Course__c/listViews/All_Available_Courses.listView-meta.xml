@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Available_Courses</fullName>
+    <columns>NAME</columns>
+    <columns>Short_Description__c</columns>
+    <columns>Course_Image__c</columns>
+    <columns>Course_Format__c</columns>
+    <columns>Display_Priority__c</columns>
+    <columns>Course_Flag__c</columns>
+    <columns>Starts__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Course_Status__c</field>
+        <operation>equals</operation>
+        <value>Available for Registration</value>
+    </filters>
+    <label>All Available Courses</label>
+</ListView>

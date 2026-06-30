@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objective_Type__c</fullName>
+    <label>Objective Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Expand Market Coverage</fullName>
+                <default>false</default>
+                <label>Expand Market Coverage</label>
+            </value>
+            <value>
+                <fullName>Generate New Opportunities</fullName>
+                <default>false</default>
+                <label>Generate New Opportunities</label>
+            </value>
+            <value>
+                <fullName>Improve Customer Satisfaction</fullName>
+                <default>false</default>
+                <label>Improve Customer Satisfaction</label>
+            </value>
+            <value>
+                <fullName>Improve Service Levels</fullName>
+                <default>false</default>
+                <label>Improve Service Levels</label>
+            </value>
+            <value>
+                <fullName>Increase Certifications</fullName>
+                <default>false</default>
+                <label>Increase Certifications</label>
+            </value>
+            <value>
+                <fullName>Increase Customer Base</fullName>
+                <default>false</default>
+                <label>Increase Customer Base</label>
+            </value>
+            <value>
+                <fullName>Increase Leads</fullName>
+                <default>false</default>
+                <label>Increase Leads</label>
+            </value>
+            <value>
+                <fullName>Increase Partner Revenue</fullName>
+                <default>false</default>
+                <label>Increase Partner Revenue</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Plans_Company</fullName>
+    <columns>NAME</columns>
+    <columns>SDO_Experience_Status__c</columns>
+    <columns>SDO_Experience_Active__c</columns>
+    <columns>SDO_Experience_Target__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SDO_Experience_CompanyChannel__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>My Company&apos;s Plans</label>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+        <allPartnerUsers></allPartnerUsers>
+    </sharedTo>
+</ListView>

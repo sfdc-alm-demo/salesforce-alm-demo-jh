@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDO_Featued_Knowledge_Articles</fullName>
+    <columns>ARTICLE_NUMBER</columns>
+    <columns>TITLE</columns>
+    <columns>FIRST_PUBLISHED_DATE</columns>
+    <columns>LAST_PUBLISHED_DATE</columns>
+    <columns>ABSTRACT</columns>
+    <columns>URL_NAME</columns>
+    <columns>Article_Type_Icon_URL__c</columns>
+    <columns>RECORDTYPE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PUBLISH_STATUS</field>
+        <operation>equals</operation>
+        <value>2</value>
+    </filters>
+    <filters>
+        <field>IS_CHANNEL_PKB</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>LANGUAGE</field>
+        <operation>equals</operation>
+        <value>en_US</value>
+    </filters>
+    <filters>
+        <field>Featured_in_Communities__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Featured Knowledge Articles</label>
+</ListView>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Profanity</fullName>
+    <columns>NAME</columns>
+    <columns>Message_1__c</columns>
+    <columns>Message_2__c</columns>
+    <columns>Type__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Type__c</field>
+        <operation>equals</operation>
+        <value>Profanity</value>
+    </filters>
+    <label>Profanity</label>
+</ListView>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>B2B_LE_Content_Name__c</columns>
+    <columns>Image_URI__c</columns>
+    <columns>Long_Description__c</columns>
+    <columns>Short_Description__c</columns>
+    <columns>Title__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>NAME</field>
+        <operation>equals</operation>
+        <value>0000001,0000002</value>
+    </filters>
+    <label>Blogs</label>
+</ListView>

@@ -1,0 +1,258 @@
+<template>
+    <lightning-card title="Revenue Intelligence Insights" icon-name="standard:insights">
+        <div class="slds-m-around_medium">
+            <!-- Loading State -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading insights..." size="small"></lightning-spinner>
+            </template>
+
+            <!-- Error State -->
+            <template if:true={hasError}>
+                <div class="slds-text-color_error slds-m-bottom_small">
+                    <lightning-icon icon-name="utility:error" size="small" class="slds-m-right_x-small"></lightning-icon>
+                    {errorMessage}
+                </div>
+            </template>
+
+            <!-- Insights Display -->
+            <template if:true={hasInsights}>
+                <!-- Risk Score Indicator -->
+                <div class="slds-m-bottom_medium">
+                    <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+                        <div>
+                            <strong>Risk Score:</strong>
+                        </div>
+                        <div>
+                            <lightning-badge 
+                                label={riskScoreLabel} 
+                                class={riskScoreClass}>
+                            </lightning-badge>
+                        </div>
+                    </div>
+                    <lightning-progress-bar 
+                        value={riskScorePercent} 
+                        size="medium"
+                        variant={riskScoreVariant}>
+                    </lightning-progress-bar>
+                </div>
+
+                <!-- Why This Score -->
+                <template if:true={hasSignals}>
+                    <div class="slds-box slds-theme_default slds-m-bottom_medium">
+                        <div class="slds-text-heading_small slds-m-bottom_x-small">Why this score</div>
+                        <ul class="slds-list_dotted slds-m-left_medium">
+                            <template for:each={signals} for:item="sig">
+                                <li key={sig} class="slds-m-bottom_xx-small">{sig}</li>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+                <!-- Recommendation Text -->
+                <template if:true={recommendationText}>
+                    <div class="slds-box slds-theme_info slds-m-bottom_medium">
+                        <div class="slds-text-heading_small slds-m-bottom_x-small">Recommendation</div>
+                        <div class="slds-text-body_regular">{recommendationText}</div>
+                    </div>
+                </template>
+
+                <!-- Deal Summary -->
+                <template if:true={dealSummary}>
+                    <div class="slds-box slds-theme_default slds-m-bottom_medium">
+                        <div class="slds-text-heading_small slds-m-bottom_x-small">Deal summary</div>
+                        <div class="slds-text-body_small slds-text-color_weak">{dealSummary}</div>
+                    </div>
+                </template>
+
+                <!-- Similar Deals -->
+                <template if:true={hasSimilarDeals}>
+                    <div class="slds-m-bottom_medium">
+                        <div class="slds-text-heading_small slds-m-bottom_x-small">Similar Deals</div>
+                        <template for:each={similarDeals} for:item="deal">
+                            <div key={deal.transactionId} class="slds-box slds-m-bottom_x-small">
+                                <div class="slds-grid slds-grid_align-spread">
+                                    <div>
+                                        <a href={deal.recordUrl} target="_blank">
+                                            {deal.transactionName}
+                                        </a>
+                                        <span class="slds-text-color_weak slds-m-left_small">
+                                            (Similarity: {deal.similarityScore})
+                                        </span>
+                                    </div>
+                                </div>
+                                <template if:true={deal.summary}>
+                                    <div class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">
+                                        {deal.summary}
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Similar Deal ID Link -->
+                <template if:true={similarDealId}>
+                    <div class="slds-m-bottom_medium">
+                        <strong>Most Similar Deal:</strong>
+                        <a href={similarDealUrl} target="_blank" class="slds-m-left_small">
+                            {similarDealDisplayName}
+                        </a>
+                    </div>
+                </template>
+            </template>
+
+            <!-- No Insights State -->
+            <template if:true={hasNoInsights}>
+                <div class="slds-text-align_center slds-text-color_weak">
+                    <lightning-icon icon-name="utility:info" size="small" class="slds-m-right_x-small"></lightning-icon>
+                    No insights available. Click "Refresh Insights" to analyze this transaction.
+                </div>
+            </template>
+
+            <!-- Pricing Calculator Section -->
+            <div class="slds-m-top_large slds-border_top">
+                <div class="slds-text-heading_medium slds-m-top_medium slds-m-bottom_small">
+                    Product and Pricing Evaluator
+                </div>
+                
+                <!-- Loading State for Pricing -->
+                <template if:true={isCalculatingPricing}>
+                    <div class="slds-text-align_center slds-m-vertical_medium">
+                        <lightning-spinner alternative-text="Calculating pricing..." size="small"></lightning-spinner>
+                        <div class="slds-text-color_weak slds-m-top_small">Running Monte Carlo simulation...</div>
+                    </div>
+                </template>
+
+                <!-- Pricing Results -->
+                <template if:true={hasPricingData}>
+                    <!-- Base Pricing Breakdown -->
+                    <div class="slds-box slds-theme_default slds-m-bottom_medium">
+                        <div class="slds-text-heading_small slds-m-bottom_small">Base Pricing (Ensura)</div>
+                        <template if:true={hasPricingLineItems}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">Product Code</th>
+                                        <th scope="col" class="slds-text-align_right">Base Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={formattedPricingLineItems} for:item="item">
+                                        <tr key={item.productCode}>
+                                            <td>{item.productCode}</td>
+                                            <td class="slds-text-align_right">{item.basePriceFormatted}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="row">Subtotal</th>
+                                        <td class="slds-text-align_right"><strong>{baseTotalLabel}</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </template>
+                    </div>
+
+                    <!-- Risk Adjustment -->
+                    <div class="slds-box slds-theme_warning slds-m-bottom_medium">
+                        <div class="slds-grid slds-grid_align-spread">
+                            <div>
+                                <strong>Risk Adjustment:</strong>
+                            </div>
+                            <div class={riskAdjustmentClass}>
+                                <strong>{riskAdjustmentLabel}</strong>
+                            </div>
+                        </div>
+                        <div class="slds-text-body_small slds-m-top_x-small slds-text-color_weak">
+                            Based on risk score: {riskScoreLabel}
+                        </div>
+                    </div>
+
+                    <!-- Risk-Adjusted Pricing Breakdown -->
+                    <div class="slds-box slds-theme_info slds-m-bottom_medium">
+                        <div class="slds-text-heading_small slds-m-bottom_small">Risk-Adjusted Pricing</div>
+                        <template if:true={hasPricingLineItems}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">Product Code</th>
+                                        <th scope="col" class="slds-text-align_right">Base Price</th>
+                                        <th scope="col" class="slds-text-align_right">Adjustment</th>
+                                        <th scope="col" class="slds-text-align_right">Final Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={formattedPricingLineItems} for:item="item">
+                                        <tr key={item.productCode}>
+                                            <td>{item.productCode}</td>
+                                            <td class="slds-text-align_right">{item.basePriceFormatted}</td>
+                                            <td class="slds-text-align_right">
+                                                <span class={item.adjustmentClass}>
+                                                    {item.adjustmentSign}{item.adjustmentFormatted}
+                                                </span>
+                                            </td>
+                                            <td class="slds-text-align_right"><strong>{item.adjustedPriceFormatted}</strong></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="row" colspan="3">Total Quote Amount</th>
+                                        <td class="slds-text-align_right">
+                                            <strong class="slds-text-heading_medium">{riskAdjustedTotalLabel}</strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </template>
+                    </div>
+
+                    <!-- Calculation Metadata -->
+                    <template if:true={calculationMetadata}>
+                        <div class="slds-box slds-theme_default slds-m-bottom_medium">
+                            <div class="slds-text-heading_small slds-m-bottom_x-small">Performance Metrics</div>
+                            <div class="slds-text-body_small">
+                                <template if:true={calculationTimeLabel}>
+                                    <div class="slds-m-bottom_xx-small">{calculationTimeLabel}</div>
+                                </template>
+                                <template if:true={simulationIterationsLabel}>
+                                    <div class="slds-m-bottom_xx-small">{simulationIterationsLabel}</div>
+                                </template>
+                                <template if:true={ensuraPricingTimeLabel}>
+                                    <div class="slds-m-bottom_xx-small">{ensuraPricingTimeLabel}</div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+
+                <!-- No Pricing Data State -->
+                <template if:false={hasPricingData}>
+                    <template if:false={isCalculatingPricing}>
+                        <div class="slds-text-align_center slds-text-color_weak slds-m-vertical_medium">
+                            <lightning-icon icon-name="utility:calculator" size="small" class="slds-m-right_x-small"></lightning-icon>
+                            Click "Calculate Pricing" to get Ensura base pricing and risk-adjusted totals.
+                        </div>
+                    </template>
+                </template>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="slds-m-top_medium slds-grid slds-grid_align-spread">
+                <lightning-button 
+                    label="Refresh Insights" 
+                    variant="brand"
+                    onclick={handleRefresh}
+                    disabled={isRefreshDisabled}>
+                </lightning-button>
+                <lightning-button 
+                    label="Calculate Pricing" 
+                    variant="brand"
+                    onclick={calculateQuotePricing}
+                    disabled={isCalculatePricingDisabled}>
+                </lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

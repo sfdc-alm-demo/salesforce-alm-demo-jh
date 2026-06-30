@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>SDO_Platform_Surveys</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <description>What: Grants access to custom Survey apps and functionality. Who: Jesse Chase. When: Sept, 2021.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyInvitation.Case__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyInvitation.External_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>SurveyInvitation.Score__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Platform - Survey Access</label>
+</PermissionSet>

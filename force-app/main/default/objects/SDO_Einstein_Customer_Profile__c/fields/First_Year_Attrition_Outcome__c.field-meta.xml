@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Year_Attrition_Outcome__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISBLANK( Deactivation_Date__c ) , NULL,
+IF((Deactivation_Date__c - Activation_Date__c)&lt;365 , &quot;TRUE&quot;, &quot;FALSE&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>First Year Attrition Outcome</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

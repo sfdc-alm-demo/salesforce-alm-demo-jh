@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Account for which user is placing order</description>
+    <label>Account</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Auction Bids</relationshipLabel>
+    <relationshipName>SDO_SCOM_Auction_Bids</relationshipName>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

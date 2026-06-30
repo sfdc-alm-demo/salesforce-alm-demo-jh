@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VRA_SDO__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Checked to identify that this is an SDO for Visual Remote Assistant to use.</description>
+    <label>VRA_SDO</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

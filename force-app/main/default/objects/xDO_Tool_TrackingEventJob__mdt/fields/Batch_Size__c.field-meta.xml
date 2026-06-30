@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Batch_Size__c</fullName>
+    <defaultValue>50</defaultValue>
+    <description>Queueable batch size between 1 and 99. Defaults to 50</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Queueable batch size between 1 and 99. Defaults to 50</inlineHelpText>
+    <label>Batch Size</label>
+    <precision>2</precision>
+    <required>true</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

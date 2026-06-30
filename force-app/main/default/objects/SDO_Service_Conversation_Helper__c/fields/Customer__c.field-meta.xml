@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Listen to Customer utterances for value</description>
+    <inlineHelpText>Do we listen for the Value word inside the Customers input/message?</inlineHelpText>
+    <label>Customer</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

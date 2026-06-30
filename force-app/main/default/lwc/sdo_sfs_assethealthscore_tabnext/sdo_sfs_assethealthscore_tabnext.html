@@ -1,0 +1,44 @@
+<template>
+    <lightning-card>
+        <div class="wrapper slds-p-around_medium">
+            <!-- Top full-width tile -->
+            <h2 class="section-title">Asset Health Score Summary</h2>
+            <div class="tiles">
+                <div class="tile tile--tall">
+                    <p class="label">Asset Health Score</p>
+                    <p class="value" data-mono="true">{assetHealthScore}</p>
+                </div>
+            </div>
+
+            <!-- Section: Age and Usage -->
+            <h2 class="section-title">Age and Usage</h2>
+            <div class="tiles tiles--two">
+                <div class="tile">
+                    <p class="label">Days Since Installation</p>
+                    <p class="value" data-mono="true">{daysSinceInstallation}</p>
+                </div>
+                <div class="tile">
+                    <p class="label">Maximum Expected Life</p>
+                    <p class="value" data-mono="true">{maximumExpectedLife}</p>
+                </div>
+                <div class="tile">
+                    <p class="label">Total Usage</p>
+                    <p class="value" data-mono="true">{totalUsage}</p>
+                </div>
+                <div class="tile">
+                    <p class="label">Maximum Expected Usage</p>
+                    <p class="value" data-mono="true">{maximumExpectedUsage}</p>
+                </div>
+            </div>
+
+            <!-- Section: Performance and Repairs -->
+            <h2 class="section-title">Performance and Repairs</h2>
+            <div class="tiles tiles--two">
+                <div class="tile tile--tall">
+                    <p class="label">Repairs In The Last 6 Months</p>
+                    <p class="value" data-mono="true">{repairsInLastSixMonths}</p>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

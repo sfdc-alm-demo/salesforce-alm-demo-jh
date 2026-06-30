@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Stage__c</fullName>
+    <label>Project Stage</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Evaluating</fullName>
+                <default>true</default>
+                <label>Evaluating</label>
+            </value>
+            <value>
+                <fullName>Ready to Present Initial Plan for Approval</fullName>
+                <default>false</default>
+                <label>Ready to Present Initial Plan for Approval</label>
+            </value>
+            <value>
+                <fullName>Scheduled</fullName>
+                <default>false</default>
+                <label>Scheduled</label>
+            </value>
+            <value>
+                <fullName>In Progress</fullName>
+                <default>false</default>
+                <label>In Progress</label>
+            </value>
+            <value>
+                <fullName>On-Hold</fullName>
+                <default>false</default>
+                <label>On-Hold</label>
+            </value>
+            <value>
+                <fullName>Completed</fullName>
+                <default>false</default>
+                <label>Completed</label>
+            </value>
+            <value>
+                <fullName>Tabeled</fullName>
+                <default>false</default>
+                <label>Tabeled</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

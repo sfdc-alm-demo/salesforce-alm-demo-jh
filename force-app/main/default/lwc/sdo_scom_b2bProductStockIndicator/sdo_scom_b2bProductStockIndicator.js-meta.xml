@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>B2B Product Stock Indicator</masterLabel>
+    <description>Displays product stock status: In Stock, Low in Stock, or Out of Stock.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+                name="stockCount"
+                type="String"
+                label="Stock Quantity"
+                description="Binds to the product's stock quantity. Use a dynamic expression."
+                default="{!Product.Inventory.details.availableToOrder}" />
+            <property
+                name="lowStockThreshold"
+                type="Integer"
+                label="Low Stock Threshold"
+                description="The quantity at or below which the 'Low in Stock' warning is displayed."
+                default="10" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

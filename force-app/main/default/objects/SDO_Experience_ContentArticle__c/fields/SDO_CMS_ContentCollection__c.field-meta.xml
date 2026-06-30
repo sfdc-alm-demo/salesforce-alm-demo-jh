@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDO_CMS_ContentCollection__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Used in LWC to connect articles to collections - not an MD or required as articles need the ability to stand alone</description>
+    <label>Content Collection</label>
+    <referenceTo>SDO_Experience_ContentCollection__c</referenceTo>
+    <relationshipLabel>Content Article</relationshipLabel>
+    <relationshipName>Content_Article</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

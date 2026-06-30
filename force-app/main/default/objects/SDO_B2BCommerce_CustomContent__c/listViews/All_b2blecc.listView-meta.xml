@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_b2blecc</fullName>
+    <columns>NAME</columns>
+    <columns>B2B_LE_Content_Name__c</columns>
+    <columns>Title__c</columns>
+    <columns>Long_Description__c</columns>
+    <columns>Image_URI__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

@@ -1,0 +1,12 @@
+.custom-container{
+	color : black;
+}
+.slds-m-around_medium {
+    margin: 1rem;
+}
+.slds-text-color_error {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}

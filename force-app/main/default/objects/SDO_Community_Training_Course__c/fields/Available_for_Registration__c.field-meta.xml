@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Available_for_Registration__c</fullName>
+    <formula>ISPICKVAL(Course_Status__c, &apos;Available for Registration&apos;) &amp;&amp;  Starts__c &gt;= NOW()</formula>
+    <inlineHelpText>Indicates whether a course can be registered for. Shows TRUE if the status is &apos;Available for Registration&apos; and the course starts in the future.</inlineHelpText>
+    <label>Available for Registration</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

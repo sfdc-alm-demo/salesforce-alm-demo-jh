@@ -45,6 +45,29 @@ public with sharing class BookingService {
         return basePrice * 1.25;
     }
 
+    private static final Decimal LOYALTY_RATE_PER_YEAR = 0.02;
+    private static final Decimal LOYALTY_MAX_DISCOUNT = 0.20;
+
+    /**
+     * Apply a loyalty discount based on years as a customer.
+     * Discount is 2% per year, capped at 20%. No discount is applied below 1 year.
+     *
+     * @param basePrice The original price before discount
+     * @param yearsAsCustomer The number of full years the customer has been active
+     * @return The discounted price
+     * @throws BookingException if basePrice is null or not positive
+     */
+    public static Decimal applyLoyaltyDiscount(Decimal basePrice, Integer yearsAsCustomer) {
+        if (basePrice == null || basePrice <= 0) {
+            throw new BookingException('Base price must be positive');
+        }
+        if (yearsAsCustomer == null || yearsAsCustomer < 1) {
+            return basePrice;
+        }
+        Decimal discountRate = Math.min(yearsAsCustomer * LOYALTY_RATE_PER_YEAR, LOYALTY_MAX_DISCOUNT);
+        return basePrice * (1 - discountRate);
+    }
+
     /**
      * Validate that the email looks well-formed.
      */

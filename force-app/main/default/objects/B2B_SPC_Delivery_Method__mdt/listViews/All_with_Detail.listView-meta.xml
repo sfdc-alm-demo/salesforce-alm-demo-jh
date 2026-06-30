@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_with_Detail</fullName>
+    <columns>MasterLabel</columns>
+    <columns>Provider_Name__c</columns>
+    <columns>Service_Code__c</columns>
+    <columns>Description__c</columns>
+    <columns>Shipment_Cost__c</columns>
+    <columns>Other_Cost__c</columns>
+    <columns>Active__c</columns>
+    <columns>Default__c</columns>
+    <columns>DeveloperName</columns>
+    <filterScope>Everything</filterScope>
+    <label>All with Detail</label>
+</ListView>

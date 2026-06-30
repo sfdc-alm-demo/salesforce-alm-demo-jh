@@ -1,0 +1,39 @@
+/* Green indicator for "In Stock" */
+.indicator {
+    background-color: rgb(2, 190, 138);
+    display: inline-block;
+    margin-right: 0.5em;  
+    border-radius: 1rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    vertical-align: middle;
+}
+
+/* Orange indicator for "Low Stock" */
+.lowstock {
+    background-color: #FFA500; /* Orange */
+    display: inline-block;
+    margin-right: 0.5em;  
+    border-radius: 1rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    vertical-align: middle;
+}
+    
+/* Red indicator for "Out of Stock" */
+.outofstock {
+    background-color: red;
+    display: inline-block;
+    margin-right: 0.5em;  
+    border-radius: 1rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    vertical-align: middle;
+}
+
+/* Style for the text showing the exact quantity */
+.stock-details {
+    font-size: 0.85em;
+    color: #707070;
+    margin-left: 0.25em;
+}

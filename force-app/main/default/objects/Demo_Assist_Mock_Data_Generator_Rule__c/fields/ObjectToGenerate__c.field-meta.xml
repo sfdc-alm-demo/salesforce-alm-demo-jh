@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ObjectToGenerate__c</fullName>
+    <description>The Salesforce object API name to generate (e.g., Contact, Account, EmailMessage)</description>
+    <externalId>false</externalId>
+    <label>Object To Generate</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Course_Flag__c</fullName>
+    <inlineHelpText>Gives a way to flag a particular course in course listings.</inlineHelpText>
+    <label>Course Flag</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>SDO_Community_CMS_Flags</valueSetName>
+    </valueSet>
+</CustomField>

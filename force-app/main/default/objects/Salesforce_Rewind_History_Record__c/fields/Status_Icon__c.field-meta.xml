@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Icon__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( TEXT( Status__c ) == &apos;Undone&apos;, IMAGE(&quot;/img/permissions_confirm16.gif&quot;, &quot;Undone&quot;),
+IF ( TEXT( Status__c ) == &apos;Undoable&apos;, IMAGE(&quot;/img/permissions_deny16.gif&quot;,  Error__c ),&apos;&apos;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Status Icon</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

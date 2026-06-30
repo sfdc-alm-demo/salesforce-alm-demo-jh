@@ -1,0 +1,28 @@
+.stock-indicator-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stock-label {
+  font-weight: 500;
+}
+
+.stock-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.stock-indicator.red {
+  background-color: #ff4d4d;
+}
+
+.stock-indicator.orange {
+  background-color: #ffa500;
+}
+
+.stock-indicator.green {
+  background-color: #28a745;
+}

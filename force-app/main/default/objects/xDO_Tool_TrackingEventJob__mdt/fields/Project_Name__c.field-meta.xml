@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Name__c</fullName>
+    <businessStatus>Active</businessStatus>
+    <description>Friendly name identifier for a target system environment</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Friendly name identifier for a target system environment</inlineHelpText>
+    <label>Project Name</label>
+    <length>255</length>
+    <required>false</required>
+    <securityClassification>Public</securityClassification>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

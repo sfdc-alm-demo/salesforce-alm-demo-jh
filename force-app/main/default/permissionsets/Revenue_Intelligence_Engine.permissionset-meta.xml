@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <dataspaceScopes>
+        <customizeActivationDefinitions>false</customizeActivationDefinitions>
+        <customizeAllDefinitions>false</customizeAllDefinitions>
+        <customizeCalculatedInsightDefinitions>false</customizeCalculatedInsightDefinitions>
+        <customizeDataActionDefinitions>false</customizeDataActionDefinitions>
+        <customizeDataApplicationDefinitions>false</customizeDataApplicationDefinitions>
+        <customizeDataObjSecondaryIndexDefinitions>false</customizeDataObjSecondaryIndexDefinitions>
+        <customizeDataShareDefinitions>false</customizeDataShareDefinitions>
+        <customizeFTestDataspaceScopedDefinition>false</customizeFTestDataspaceScopedDefinition>
+        <customizeIdentityResolutionDefinitions>false</customizeIdentityResolutionDefinitions>
+        <customizeMLPredictionDefinitions>false</customizeMLPredictionDefinitions>
+        <customizeSegmentationDefinitions>false</customizeSegmentationDefinitions>
+        <customizeSemanticSearchDefinitions>false</customizeSemanticSearchDefinitions>
+        <dataAccessLevel>ALL</dataAccessLevel>
+        <dataspaceScope>default</dataspaceScope>
+        <objectAccessLevel>BY_POLICY</objectAccessLevel>
+        <viewActivationDefinitions>false</viewActivationDefinitions>
+        <viewCalculatedInsightDefinitions>false</viewCalculatedInsightDefinitions>
+        <viewDataActionDefinitions>false</viewDataActionDefinitions>
+        <viewDataApplicationDefinitions>false</viewDataApplicationDefinitions>
+        <viewDataObjSecondaryIndexDefinitions>false</viewDataObjSecondaryIndexDefinitions>
+        <viewDataShareDefinitions>false</viewDataShareDefinitions>
+        <viewFTestDataspaceScopedDefinition>false</viewFTestDataspaceScopedDefinition>
+        <viewIdentityResolutionDefinitions>false</viewIdentityResolutionDefinitions>
+        <viewMLPredictionDefinitions>false</viewMLPredictionDefinitions>
+        <viewSegmentationDefinitions>false</viewSegmentationDefinitions>
+        <viewSemanticSearchDefinitions>false</viewSemanticSearchDefinitions>
+    </dataspaceScopes>
+    <description>Grants access to Revenue_Intelligence_Engine -RevenueIntelligenceEnginePrincipal for Heroku AppLink</description>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>HerokuCaseRanker-HerokuCaseRankerPrincipal</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>Revenue_Intelligence_Engine-RevenueIntelligenceEnginePrincipal</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Revenue Intelligence Engine</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManageHerokuAppLink</name>
+    </userPermissions>
+</PermissionSet>

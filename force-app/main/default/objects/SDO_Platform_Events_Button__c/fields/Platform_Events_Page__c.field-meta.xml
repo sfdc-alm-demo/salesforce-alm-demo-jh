@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Platform_Events_Page__c</fullName>
+    <label>Platform Events Page</label>
+    <referenceTo>SDO_Platform_Events_Page__c</referenceTo>
+    <relationshipLabel>Platform Events Buttons</relationshipLabel>
+    <relationshipName>Platform_Event_Buttons</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

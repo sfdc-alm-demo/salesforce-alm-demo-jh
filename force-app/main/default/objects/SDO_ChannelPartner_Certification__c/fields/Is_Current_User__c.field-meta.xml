@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Current_User__c</fullName>
+    <description>Indicates that the certification is assigned to the community user that is currently logged in. Used to populate a list view.</description>
+    <formula>Contact__r.Id  =  $User.ContactId</formula>
+    <inlineHelpText>Indicates that the certification is assigned to the community user that is currently logged in. Used to populate a list view.</inlineHelpText>
+    <label>Is Current User</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

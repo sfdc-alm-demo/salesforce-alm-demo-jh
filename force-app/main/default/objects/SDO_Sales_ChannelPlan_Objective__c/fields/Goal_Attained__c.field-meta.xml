@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Goal_Attained__c</fullName>
+    <formula>if(NULLVALUE(Metric_Result__c,0) &lt;&gt; 0,   if(NULLVALUE(Metric_Goal__c, 0) &lt;&gt; 0, Metric_Result__c / Metric_Goal__c, null), null)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>% Goal Attained</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

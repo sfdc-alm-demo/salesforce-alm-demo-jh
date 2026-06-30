@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage__c</fullName>
+    <description>Indicates the progress of a Tracking Event record as it is processed by the services</description>
+    <inlineHelpText>Indicates the progress of a Tracking Event record as it is processed by the services</inlineHelpText>
+    <label>Stage</label>
+    <required>true</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>New</fullName>
+                <default>true</default>
+                <label>New</label>
+            </value>
+            <value>
+                <fullName>Mixpanel Event</fullName>
+                <default>false</default>
+                <label>Mixpanel Event</label>
+            </value>
+            <value>
+                <fullName>Mixpanel Profile</fullName>
+                <default>false</default>
+                <label>Mixpanel Profile</label>
+            </value>
+            <value>
+                <fullName>Processed</fullName>
+                <default>false</default>
+                <label>Processed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

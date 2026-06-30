@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Newest_Message_Date__c</fullName>
+    <description>Time of the most recent message</description>
+    <label>Newest Message Date</label>
+    <summarizedField>AI_Agent_Conversation_Entry__c.Entry_Time__c</summarizedField>
+    <summaryFilterItems>
+        <field>AI_Agent_Conversation_Entry__c.IsDemoResponse__c</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryForeignKey>AI_Agent_Conversation_Entry__c.AI_Agent_Conversation__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

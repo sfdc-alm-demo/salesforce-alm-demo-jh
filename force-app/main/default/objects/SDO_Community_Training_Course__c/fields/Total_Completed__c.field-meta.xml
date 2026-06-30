@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Completed__c</fullName>
+    <inlineHelpText>Total number of people who have completed this course.</inlineHelpText>
+    <label>Total Completed</label>
+    <summaryFilterItems>
+        <field>SDO_Community_Course_Enrollment__c.Enrollment_Status__c</field>
+        <operation>equals</operation>
+        <value>Completed</value>
+    </summaryFilterItems>
+    <summaryForeignKey>SDO_Community_Course_Enrollment__c.Training_Course__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

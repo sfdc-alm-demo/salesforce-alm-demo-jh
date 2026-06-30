@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ActiveProjectsSuggestedbyCustomers</fullName>
+    <columns>NAME</columns>
+    <columns>Project_Description__c</columns>
+    <columns>Project_Status__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Project_Stage__c</field>
+        <operation>equals</operation>
+        <value>Evaluating,Ready to Present Initial Plan for Approval,Scheduled,In Progress</value>
+    </filters>
+    <filters>
+        <field>Type_of_Project__c</field>
+        <operation>equals</operation>
+        <value>Customer Facing</value>
+    </filters>
+    <label>Active Projects Suggested by Customers</label>
+    <language>en_US</language>
+</ListView>

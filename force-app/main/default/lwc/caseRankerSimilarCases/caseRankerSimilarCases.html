@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="Similar Cases" icon-name="standard:case">
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            <p class="subtle">Semantic similarity (MIA + pgvector)</p>
+
+            <div class="slds-m-top_small">
+                <lightning-button
+                    variant="brand"
+                    label={buttonLabel}
+                    onclick={handleRun}
+                    disabled={isLoading}
+                ></lightning-button>
+            </div>
+
+            <template if:true={isLoading}>
+                <div class="slds-m-top_medium">
+                    <lightning-spinner size="small" alternative-text="Finding similar cases"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:true={errorMessage}>
+                <div class="slds-m-top_medium slds-text-color_error">
+                    {errorMessage}
+                </div>
+            </template>
+
+            <template if:true={hasResults}>
+                <div class="slds-m-top_medium">
+                    <template if:true={degraded}>
+                        <div class="slds-text-color_weak slds-m-bottom_x-small">
+                            Degraded mode: rerank unavailable (showing similarity-only ranking)
+                        </div>
+                    </template>
+
+                    <lightning-datatable
+                        key-field="caseId"
+                        data={rows}
+                        columns={columns}
+                        hide-checkbox-column
+                    ></lightning-datatable>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

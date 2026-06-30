@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Milestones__c</fullName>
+    <inlineHelpText>What are some of the key milestones for this project? 
+
+Milestones can also be cataloged and tracked in the related list below.</inlineHelpText>
+    <label>Milestones</label>
+    <length>32000</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>6</visibleLines>
+</CustomField>

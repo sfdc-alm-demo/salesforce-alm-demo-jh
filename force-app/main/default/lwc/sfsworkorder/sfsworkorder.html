@@ -1,0 +1,17 @@
+<template>
+<lightning-card title="Work Type Products" icon-name="standard:product">
+        <div class="slds-m-around_medium">
+            <template if:true={productData}>
+                <lightning-datatable
+                    key-field="id"
+                    data={productData}
+                    columns={columns}
+                    hide-checkbox-column="true">
+                </lightning-datatable>
+            </template>
+            <template if:false={productData}>
+                <p class="slds-text-color_error">No products found for the selected Work Type.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

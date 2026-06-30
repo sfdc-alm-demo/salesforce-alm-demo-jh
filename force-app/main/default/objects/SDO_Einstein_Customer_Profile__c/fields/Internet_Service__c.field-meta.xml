@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Internet_Service__c</fullName>
+    <label>Internet Service</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>No</fullName>
+                <default>false</default>
+                <label>No</label>
+            </value>
+            <value>
+                <fullName>Fiber optic</fullName>
+                <default>false</default>
+                <label>Fiber optic</label>
+            </value>
+            <value>
+                <fullName>DSL</fullName>
+                <default>false</default>
+                <label>DSL</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

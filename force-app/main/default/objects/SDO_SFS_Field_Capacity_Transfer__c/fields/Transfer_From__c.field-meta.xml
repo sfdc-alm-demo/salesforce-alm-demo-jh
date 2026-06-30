@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transfer_From__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Transfer From</label>
+    <referenceTo>ServiceTerritory</referenceTo>
+    <relationshipLabel>Field Capacity Transfers (Transfer From)</relationshipLabel>
+    <relationshipName>Field_Capacity_Transfers1</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

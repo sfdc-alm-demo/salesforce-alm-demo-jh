@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Featured_in_Communities__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicated whether this article should be featured in the org&apos;s communities CMS collections.</description>
+    <inlineHelpText>Indicated whether this article should be featured in the org&apos;s communities CMS collections.</inlineHelpText>
+    <label>Featured in Communities</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

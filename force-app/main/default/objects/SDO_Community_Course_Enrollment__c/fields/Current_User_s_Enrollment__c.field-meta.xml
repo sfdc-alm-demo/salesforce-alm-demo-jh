@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_User_s_Enrollment__c</fullName>
+    <description>Returns TRUE when the currently logged-in user is the one enrolled in the course. Used to filter list views, such as to &apos;My Courses&apos;</description>
+    <formula>Enrolled_User__r.Id = $User.Id</formula>
+    <inlineHelpText>Returns TRUE when the currently logged-in user is the one enrolled in the course.</inlineHelpText>
+    <label>Current User&apos;s Enrollment</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

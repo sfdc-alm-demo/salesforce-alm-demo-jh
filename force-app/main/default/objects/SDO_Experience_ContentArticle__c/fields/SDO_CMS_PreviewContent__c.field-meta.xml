@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SDO_CMS_PreviewContent__c</fullName>
+    <description>Text area leveraged in the SDO CMS component to provide a preview of content</description>
+    <inlineHelpText>Preview of the content displayed in SDO CMS component</inlineHelpText>
+    <label>Preview Content</label>
+    <length>15000</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

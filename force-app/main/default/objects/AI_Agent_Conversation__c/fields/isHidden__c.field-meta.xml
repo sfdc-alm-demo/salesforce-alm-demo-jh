@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>isHidden__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to &apos;remove&apos; an item from the display without actually deleting it.</description>
+    <inlineHelpText>Do not set - set in memory by demo component</inlineHelpText>
+    <label>isHidden</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
