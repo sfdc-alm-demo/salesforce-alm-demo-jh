@@ -45,6 +45,25 @@ public with sharing class BookingService {
         return basePrice * 1.25;
     }
 
+    private static final Decimal LOYALTY_RATE = 0.02;
+    private static final Decimal LOYALTY_CAP = 0.20;
+
+    /**
+     * Apply a loyalty discount: 2% per year of tenure, capped at 20%.
+     * No discount is applied for fewer than 1 year.
+     *
+     * @param basePrice The pre-discount price; must be positive
+     * @param yearsAsCustomer Full years of tenure; null or 0 yields no discount
+     * @return The discounted price
+     */
+    public static Decimal applyLoyaltyDiscount(Decimal basePrice, Integer yearsAsCustomer) {
+        if (yearsAsCustomer == null || yearsAsCustomer < 1) {
+            return basePrice;
+        }
+        Decimal rate = Math.min(yearsAsCustomer * LOYALTY_RATE, LOYALTY_CAP);
+        return basePrice * (1 - rate);
+    }
+
     /**
      * Validate that the email looks well-formed.
      */
