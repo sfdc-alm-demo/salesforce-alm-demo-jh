@@ -31,6 +31,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Pin Node 20: the SF CLI crashes on the runner's new Node 24 default with
+      # an "unsettled top-level await" error (exit 13) before it can authenticate.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install Salesforce CLI
         run: |
           npm install -g @salesforce/cli@latest
@@ -166,6 +173,12 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      # Pin Node 20: SF CLI crashes on the runner's Node 24 default (see matrix job).
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install Salesforce CLI + Code Analyzer
         run: |
           npm install -g @salesforce/cli@latest
@@ -252,6 +265,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Pin Node 20: SF CLI crashes on the runner's Node 24 default (see matrix job).
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install Salesforce CLI
         run: |
