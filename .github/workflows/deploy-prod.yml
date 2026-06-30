@@ -64,6 +64,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pin Node 20: SF CLI crashes on the runner's Node 24 default with an
+      # "unsettled top-level await" error (exit 13) before it can authenticate.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli@latest
 
