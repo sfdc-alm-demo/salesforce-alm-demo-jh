@@ -38,9 +38,10 @@ for alias in prod-demo sandbox-demo; do
 done
 
 echo "==> 3/5  Extract auth URLs (stays local to this shell)"
-DEVHUB_URL=$(sf org display --target-org devhub       --verbose --json | jq -r '.result.sfdxAuthUrl')
-PROD_URL=$(sf org display   --target-org prod-demo     --verbose --json | jq -r '.result.sfdxAuthUrl')
-SANDBOX_URL=$(sf org display --target-org sandbox-demo --verbose --json | jq -r '.result.sfdxAuthUrl')
+# sf org display --verbose redacts sfdxAuthUrl in recent CLI versions; use the dedicated command instead.
+DEVHUB_URL=$(sf org auth show-sfdx-auth-url --target-org devhub       --json | jq -r '.result.sfdxAuthUrl')
+PROD_URL=$(sf org auth show-sfdx-auth-url   --target-org prod-demo     --json | jq -r '.result.sfdxAuthUrl')
+SANDBOX_URL=$(sf org auth show-sfdx-auth-url --target-org sandbox-demo --json | jq -r '.result.sfdxAuthUrl')
 
 for pair in "DEVHUB_URL:$DEVHUB_URL" "PROD_URL:$PROD_URL" "SANDBOX_URL:$SANDBOX_URL"; do
   name="${pair%%:*}"; val="${pair#*:}"
