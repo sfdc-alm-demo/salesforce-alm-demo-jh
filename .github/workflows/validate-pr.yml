@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          npm install -g @salesforce/cli@latest
+          npm install -g @salesforce/cli@2.85.6
           sf --version
 
       - name: Authenticate to ${{ matrix.org_alias }}
@@ -168,7 +168,7 @@ jobs:
 
       - name: Install Salesforce CLI + Code Analyzer
         run: |
-          npm install -g @salesforce/cli@latest
+          npm install -g @salesforce/cli@2.85.6
           sf plugins install code-analyzer@latest
           sf code-analyzer rules --rule-selector Recommended --view table >/dev/null
 
@@ -255,7 +255,7 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          npm install -g @salesforce/cli@latest
+          npm install -g @salesforce/cli@2.85.6
           sf --version
 
       - name: Authenticate to Dev Hub
