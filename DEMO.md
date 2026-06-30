@@ -1,30 +1,40 @@
 # Demo Speaker Notes (20 min)
 
-## Pre-flight (do 30 min before the demo)
+## Pre-flight (do 60 min before the demo)
 
-Run the smoke check below. If anything fails, you have time to recover.
+Run every check in order. Do not skip step 3 — a locally active scratch org and a valid GitHub Actions secret are two different things.
 
 ```bash
-# 1. Scratch orgs alive?
+# 1. Scratch orgs alive locally?
 sf org list | grep -E "prod-demo|sandbox-demo"
-# Both should show Status: Active and an expiry date in the future
+# Both should show Status: Active and a future expiry date.
+# If missing or expired → run: bash scripts/refresh-demo-env.sh
 
-# 2. Auth URLs still valid?
+# 2. Local auth working?
 sf data query --target-org prod-demo --query "SELECT Id FROM User LIMIT 1" --json | jq -r '.status'
 sf data query --target-org sandbox-demo --query "SELECT Id FROM User LIMIT 1" --json | jq -r '.status'
-# Both should print 0 (success)
+# Both should print 0. If not → sf org login web --alias <alias>
 
-# 3. Last workflow run green?
-gh run list --repo sfdc-alm-demo/salesforce-alm-demo-jh --limit 1 --json conclusion -q '.[].conclusion'
-# Should print "success"
+# 3. *** CRITICAL *** GitHub Actions secrets valid for the CURRENT orgs?
+#    A scratch org can show Active locally while the secret in GitHub still points
+#    at the previous org. Every time orgs are recreated, secrets must be refreshed.
+#    Prove CI auth works by firing a real workflow run and watching it succeed:
+gh workflow run validate-pr.yml --repo sfdc-alm-demo/salesforce-alm-demo-jh --ref main
+sleep 15
+gh run list --repo sfdc-alm-demo/salesforce-alm-demo-jh --limit 1 --json status,conclusion -q '.[0] | "\(.status) \(.conclusion)"'
+# Poll until "completed success". If it fails at Authenticate →
+# run: bash scripts/refresh-demo-env.sh  then repeat step 3.
 
-# 4. Reset the demo state — close any open PRs, get back on a clean main
+# 4. Clean repo state
 cd ~/Development/salesforce-alm-demo-jh
-git checkout main
-git pull
+git checkout main && git pull
 gh pr list --repo sfdc-alm-demo/salesforce-alm-demo-jh --state open
-# Should be empty
+# Should be empty. If not → gh pr close <number> --delete-branch
+grep -c 'applyLoyaltyDiscount' force-app/main/default/classes/BookingService.cls \
+  && echo "ERROR: reset needed" || echo "✅ Ready for Act 1"
 ```
+
+> **If you ran `bash scripts/refresh-demo-env.sh` at any point today, step 3 is not optional.** New orgs = new auth URLs = old secrets are dead.
 
 If any check fails, see the **Recovery** section at the bottom.
 
