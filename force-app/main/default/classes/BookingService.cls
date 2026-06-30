@@ -54,4 +54,16 @@ public with sharing class BookingService {
         }
         return Pattern.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$', email);
     }
+
+    /**
+     * Apply a loyalty discount: 2% per year as a customer, capped at 20%.
+     * No discount for fewer than 1 year (or null).
+     */
+    public static Decimal applyLoyaltyDiscount(Decimal basePrice, Integer yearsAsCustomer) {
+        if (yearsAsCustomer == null || yearsAsCustomer < 1) {
+            return basePrice;
+        }
+        Decimal discountRate = Math.min(yearsAsCustomer * 0.02, 0.20);
+        return basePrice * (1 - discountRate);
+    }
 }
